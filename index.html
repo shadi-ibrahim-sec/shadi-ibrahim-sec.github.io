@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shadi Ibrahim — Web Penetration Tester</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+h1 { font-size: 35px !important; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#06080b;
+  --surface:#0d1117;
+  --surface2:#131920;
+  --border:#1a2030;
+  --accent:#00e5ff;
+  --accent-dim:rgba(0,229,255,0.08);
+  --accent-glow:rgba(0,229,255,0.15);
+  --red:#ff3c5a;
+  --orange:#ff8c00;
+  --green:#00d47e;
+  --blue:#4d9fff;
+  --muted:#536070;
+  --body:#8a97a8;
+  --text:#c8d4e0;
+  --white:#edf2f7;
+  --mono:'Space Mono',monospace;
+  --sans:'Syne',sans-serif;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* ═══════════════ CANVAS BACKGROUND ═══════════════ */
+#matrix-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;opacity:0.18;pointer-events:none;
+}
+
+/* ═══════════════ NAV ═══════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 56px;
+  background:rgba(6,8,11,0.8);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.08em}
+.nav-logo span{color:var(--muted)}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+  text-decoration:none;letter-spacing:.12em;text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--accent)}
+
+/* ═══════════════ HERO ═══════════════ */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:140px 56px 100px;max-width:1200px;margin:0 auto;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(0,229,255,.2);padding:6px 14px;
+  margin-bottom:36px;width:fit-content;
+  background:rgba(0,229,255,.04);
+}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+.hero h1{
+  font-size:clamp(52px,8vw,110px);font-weight:800;line-height:.95;
+  letter-spacing:-.03em;color:var(--white);margin-bottom:6px;
+}
+.hero h1 .name-line{
+  display:block;
+  background:linear-gradient(135deg,var(--white) 30%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-role{
+  font-family:var(--mono);font-size:15px;color:var(--muted);
+  margin:28px 0 20px;letter-spacing:.04em;
+}
+.hero-role em{color:var(--accent);font-style:normal}
+
+.hero-statement{
+  max-width:620px;font-size:18px;color:var(--body);
+  line-height:1.75;margin-bottom:52px;font-weight:400;
+}
+.hero-statement strong{color:var(--white);font-weight:600}
+
+.hero-stats{
+  display:flex;gap:40px;margin-bottom:52px;flex-wrap:wrap;
+}
+.stat{border-left:2px solid var(--accent);padding-left:16px}
+.stat-num{font-size:32px;font-weight:800;color:var(--white);line-height:1;font-family:var(--sans)}
+.stat-num.red{color:var(--red)}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:16px 32px;
+  border:none;cursor:pointer;text-decoration:none;
+  transition:opacity .2s,box-shadow .2s;display:inline-block;
+  box-shadow:0 0 24px rgba(0,229,255,.2);
+}
+.btn-primary:hover{opacity:.9;box-shadow:0 0 40px rgba(0,229,255,.35)}
+.btn-ghost{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);background:transparent;padding:16px 32px;
+  border:1px solid rgba(0,229,255,.3);cursor:pointer;text-decoration:none;
+  transition:background .2s,border-color .2s;display:inline-block;
+}
+.btn-ghost:hover{background:var(--accent-dim);border-color:var(--accent)}
+
+/* ═══════════════ SECTION BASE ═══════════════ */
+.wrap{max-width:1200px;margin:0 auto;padding:0 56px}
+section{position:relative;z-index:1;padding:100px 0}
+.section-eye{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-eye::before{content:'';width:24px;height:1px;background:var(--accent)}
+h2.section-title{
+  font-size:clamp(32px,4.5vw,52px);font-weight:800;color:var(--white);
+  letter-spacing:-.025em;margin-bottom:60px;line-height:1.1;
+}
+.rule{border:none;border-top:1px solid var(--border);margin:0;position:relative;z-index:1}
+
+/* ═══════════════ PENTEST SHOWCASE ═══════════════ */
+.pentest-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.pentest-wrap::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--red),var(--orange),var(--accent));
+}
+.pentest-top{
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;
+  padding:48px 48px 0;
+}
+.pentest-kicker{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.pentest-name{font-size:30px;font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:4px}
+.pentest-url{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.auth-badge{
+  font-family:var(--mono);font-size:10px;padding:6px 14px;
+  background:rgba(0,212,126,.08);color:var(--green);
+  border:1px solid rgba(0,212,126,.25);letter-spacing:.08em;
+  white-space:nowrap;height:fit-content;
+}
+
+.pentest-summary{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);margin:40px 0 0;
+}
+.summary-block{
+  background:var(--surface);padding:28px 36px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.summary-num{font-size:48px;font-weight:800;line-height:1;font-family:var(--sans)}
+.summary-num.red{color:var(--red)}
+.summary-num.orange{color:var(--orange)}
+.summary-num.green{color:var(--green)}
+.summary-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+/* Findings accordion */
+.findings-section{padding:0 48px 48px}
+.findings-header{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);padding:32px 0 16px;border-bottom:1px solid var(--border);margin-bottom:0;
+}
+.finding-item{border-bottom:1px solid var(--border)}
+.finding-trigger{
+  width:100%;background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:16px;padding:20px 0;
+  text-align:left;transition:background .15s;
+}
+.finding-trigger:hover .finding-title{color:var(--accent)}
+.sev-pill{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;flex-shrink:0;border-radius:2px;min-width:72px;text-align:center;
+}
+.sev-critical{background:rgba(255,60,90,.12);color:var(--red);border:1px solid rgba(255,60,90,.3)}
+.sev-medium{background:rgba(255,140,0,.1);color:var(--orange);border:1px solid rgba(255,140,0,.25)}.sev-low{background:rgba(77,159,255,.1);color:var(--blue);border:1px solid rgba(77,159,255,.25)}
+.sev-pass{background:rgba(0,212,126,.08);color:var(--green);border:1px solid rgba(0,212,126,.2)}
+.finding-title{font-size:15px;font-weight:600;color:var(--text);flex:1;transition:color .2s}
+.finding-owasp{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto;padding-right:16px}
+.finding-arrow{color:var(--muted);font-size:12px;transition:transform .25s;flex-shrink:0}
+.finding-trigger[aria-expanded="true"] .finding-arrow{transform:rotate(180deg)}
+
+.finding-body{
+  display:none;padding:0 0 28px 88px;
+}
+.finding-body.open{display:block}
+.finding-desc{font-size:14px;color:var(--body);line-height:1.75;margin-bottom:16px}
+.finding-impact{
+  font-family:var(--mono);font-size:12px;color:var(--text);
+  background:var(--surface2);border-left:3px solid var(--red);
+  padding:14px 18px;line-height:1.6;
+}
+.finding-impact.orange{border-left-color:var(--orange)}
+.finding-impact.blue{border-left-color:var(--blue)}
+.finding-impact.green{border-left-color:var(--green);color:var(--green)}
+
+.pentest-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 48px;border-top:1px solid var(--border);
+  background:var(--surface2);flex-wrap:wrap;gap:16px;
+}
+.pentest-tags{display:flex;gap:8px;flex-wrap:wrap}
+.ptag{
+  font-family:var(--mono);font-size:10px;padding:4px 12px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  color:var(--muted);letter-spacing:.06em;
+}
+.dl-btn{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--bg);background:var(--white);padding:12px 24px;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:opacity .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;
+}
+.dl-btn:hover{opacity:.85}
+
+/* ═══════════════ CTF GRID ═══════════════ */
+.ctf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--border)}
+.ctf-card{
+  background:var(--surface);padding:32px;
+  transition:background .2s;position:relative;overflow:hidden;
+}
+.ctf-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:gradient(90deg,var(--accent),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.ctf-card:hover{background:var(--surface2)}
+.ctf-card:hover::after{transform:scaleX(1)}
+.ctf-platform{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px}
+.ctf-title{font-size:17px;font-weight:700;color:var(--white);margin-bottom:6px}
+.ctf-vuln{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:14px}
+.ctf-desc{font-size:13px;color:var(--body);line-height:1.65}
+
+/* ═══════════════ SKILLS ═══════════════ */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border)}
+.skill-group{background:var(--surface);padding:28px 32px}
+.skill-label{
+  font-family:var(--mono);font-size:9px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.14em;margin-bottom:18px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.skill-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.skill-list li{
+  font-size:14px;color:var(--body);padding-left:16px;position:relative;
+}
+.skill-list li::before{content:'›';position:absolute;left:0;color:var(--accent)}
+
+/* ═══════════════ CERTS ═══════════════ */
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+.cert-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .2s}
+.cert-card:hover{border-color:rgba(0,229,255,.3)}
+.cert-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;filter:brightness(.95);transition:filter .25s}.cert-card:hover .cert-img{filter:brightness(1.05)}
+.cert-meta{padding:20px 24px}
+.cert-issuer{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px}
+.cert-name{font-size:16px;font-weight:700;color:var(--white);margin-bottom:3px}
+.cert-date{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* ═══════════════ CONTACT ═══════════════ */
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:var(--surface);border:1px solid var(--border);overflow:hidden;
+}
+.contact-left{
+  padding:64px 56px;border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.contact-left::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;
+  background:radial-gradient(circle,rgba(0,229,255,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.contact-headline{font-size:clamp(22px,3vw,38px);font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-.02em;margin-bottom:16px}
+.contact-sub{font-size:15px;color:var(--body);line-height:1.75}
+.contact-right{padding:64px 56px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.contact-link{
+  display:flex;align-items:center;gap:14px;text-decoration:none;
+  color:var(--text);font-family:var(--mono);font-size:13px;
+  padding:16px 20px;border:1px solid var(--border);background:var(--bg);
+  transition:border-color .2s,color .2s,background .2s;
+}
+.contact-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.contact-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+.contact-available{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:10px;color:var(--green);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;
+}
+.contact-available::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+
+/* ═══════════════ FOOTER ═══════════════ */
+footer{
+  position:relative;z-index:1;border-top:1px solid var(--border);
+  padding:28px 56px;max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-copy{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
+.footer-copy span{color:var(--accent)}
+
+/* ═══════════════ SCROLL REVEAL ═══════════════ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(max-width:900px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .wrap{padding:0 24px}
+  .hero{padding:120px 24px 80px}
+  .hero-stats{gap:24px}
+  .pentest-top{grid-template-columns:1fr;padding:28px 24px 0}
+  .pentest-summary{grid-template-columns:1fr}
+  .findings-section{padding:0 24px 32px}
+  .finding-body{padding-left:0}
+  .pentest-footer{padding:20px 24px}
+  .contact-grid{grid-template-columns:1fr}
+  .contact-left{border-right:none;border-bottom:1px solid var(--border);padding:40px 28px}
+  .contact-right{padding:40px 28px}
+  footer{padding:24px;flex-direction:column;gap:8px;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+  #matrix-canvas{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- MATRIX CANVAS -->
+<canvas id="matrix-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">shadi_ibrahim<span>.sec</span></div>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#ctf">CTF</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">
+    <span></span>
+    Available for engagements</div>
+  <h1>
+    I find what your<br>
+    <span class="name-line">security team missed.</span>
+  </h1>
+  <p class="hero-role">
+    Shadi Ibrahim &nbsp;·&nbsp; <em>Web Penetration Tester</em> &nbsp;·&nbsp; Bug Bounty Hunter
+  </p>
+  <p class="hero-statement">
+    I break web applications — <strong>legally, methodically, and with a full report.</strong>
+    From intercepting API calls to chaining business logic flaws into real financial damage,
+    I find vulnerabilities before your users pay the price.
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num red">2</div>
+      <div class="stat-label">Critical findings<br>on first real engagement</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8</div>
+      <div class="stat-label">Vulnerabilities<br>documented & reported</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Authorized &<br>responsible testing</div>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <a href="#work" class="btn-primary">See the Work</a>
+    <a href="#contact" class="btn-ghost">Hire Me</a>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- PENTEST SHOWCASE -->
+<section id="work">
+  <div class="wrap">
+    <div class="section-eye">Real-World Engagement</div>
+    <h2 class="section-title">What I found<br>on my first client.</h2>
+
+    <div class="pentest-wrap reveal">
+      <div class="pentest-top">
+        <div>
+          <div class="pentest-kicker">Black-Box Pentest · June 2026 · Authorized</div>
+          <div class="pentest-name">E-Commerce Web Application</div>
+          <div class="pentest-url">redacted-client-app.vercel.app &nbsp;·&nbsp; Next.js / Supabase</div>
+        </div>
+        <div class="auth-badge">✓ Written Authorization Obtained</div>
+      </div>
+
+      <div class="pentest-summary">
+        <div class="summary-block">
+          <span class="summary-num red">2</span>
+          <span class="summary-label">Critical Findings</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num orange">2</span>
+          <span class="summary-label">Med / Low Findings</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num green">4</span>
+          <span class="summary-label">Controls Verified</span>
+        </div>
+      </div>
+
+      <div class="findings-section">
+        <div class="findings-header">Findings — click to expand</div>
+
+        <!-- TH-01 -->
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-critical">Critical</span>
+            <span class="finding-title">Client-Side Price Manipulation</span>
+            <span class="finding-owasp">OWASP A06:2025</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">The order-creation endpoint <code style="color:var(--accent);font-size:12px">POST /api/orders</code> accepted <code style="color:var(--accent);font-size:12px">price</code> and <code style="color:var(--accent);font-size:12px">total</code> directly from the client JSON body without server-side re-validation. By intercepting the checkout request in Burp Suite and modifying <code style="color:var(--accent);font-size:12px">"price": 79.99</code> to <code style="color:var(--accent);font-size:12px">"price": 2</code>, I received a <code style="color:var(--accent);font-size:12px">201 Created</code> response — a fully confirmed order at an arbitrary price.</p>
+            <div class="finding-impact">⚡ Impact: Any authenticated user can purchase any item for $0.01. Because the platform uses Cash on Delivery with no third-party payment gateway, there is no downstream re-validation. Uncapped financial loss at scale.</div>
+          </div>
+        </div><!-- TH-02 -->
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-critical">Critical</span>
+            <span class="finding-title">Unauthorized Admin Panel Access — PII Exposure</span>
+            <span class="finding-owasp">OWASP A01:2025</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Navigating directly to <code style="color:var(--accent);font-size:12px">/admin/orders</code> while authenticated as a standard <code style="color:var(--accent);font-size:12px">"role":"User"</code> account rendered the full admin panel with zero server-side role check. Every customer's full name, phone number, delivery address, and order history was immediately visible. No special tooling required — just a URL.</p>
+            <div class="finding-impact">⚡ Impact: Mass PII exposure for every registered customer. Broken access control requires no exploit, no escalation — just navigation. Classified Critical under OWASP A01:2025.</div>
+          </div>
+        </div>
+
+        <!-- TH-03 -->
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-medium">Medium</span>
+            <span class="finding-title">Missing Rate Limiting on Login Endpoint</span>
+            <span class="finding-owasp">OWASP A07:2025</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Seven consecutive failed login attempts against the same account returned identical, immediate <code style="color:var(--accent);font-size:12px">"Invalid login credentials"</code> responses — no lockout, delay, or CAPTCHA triggered. The endpoint is fully open to automated brute-force and credential-stuffing at scale.</p>
+            <div class="finding-impact orange">⚡ Impact: Users with weak or previously-breached passwords are at elevated risk of account takeover via automated attacks.</div>
+          </div>
+        </div>
+
+        <!-- TH-04 -->
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-low">Low</span>
+            <span class="finding-title">Improper Input Validation — HTTP 500 on Negative Price</span>
+            <span class="finding-owasp">OWASP A10:2025</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Submitting <code style="color:var(--accent);font-size:12px">"price": -10</code> caused an unhandled server exception returning <code style="color:var(--accent);font-size:12px">HTTP 500</code> with empty body — no graceful validation or error handling. Confirms complete absence of numeric boundary validation on the order endpoint.</p>
+            <div class="finding-impact blue">⚡ Impact: Unhandled crash condition. Could be leveraged as a building block for availability degradation. Indicates broader input validation gaps.</div>
+          </div>
+        </div>
+
+        <!-- PASSES -->
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-pass">4× Pass</span>
+            <span class="finding-title">Verified Security Controls</span>
+            <span class="finding-owasp">Positive Findings</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Four controls were actively tested and confirmed working: <strong style="color:var(--white)">Stored XSS</strong> — React's output encoding correctly rendered the payload as an inert text node.<strong style="color:var(--white)">CSRF</strong> — SameSite=Lax cookie attribute blocks cross-origin POST requests. <strong style="color:var(--white)">Admin Write Authorization</strong> — order status update correctly returned 403 Forbidden for non-privileged accounts. <strong style="color:var(--white)">IDOR</strong> — cross-account direct order ID access returned 404, session-scoped correctly.</p>
+            <div class="finding-impact green">✓ These controls are correctly implemented and should be preserved during remediation. The write/read authorization inconsistency identified above makes these results particularly valuable context.</div>
+          </div>
+        </div>
+
+      </div><!-- /findings-section -->
+
+      <div class="pentest-footer">
+        <div class="pentest-tags">
+          <span class="ptag">Black-Box</span>
+          <span class="ptag">Burp Suite</span>
+          <span class="ptag">OWASP Top 10:2025</span>
+          <span class="ptag">Business Logic</span>
+          <span class="ptag">Access Control</span>
+          <span class="ptag">Written Authorization</span>
+        </div>
+        <a href="report.pdf" download class="dl-btn">
+          ↓ Download Full Report (PDF)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- CTF -->
+<section id="ctf">
+  <div class="wrap">
+    <div class="section-eye">Hacker101 / CTF</div>
+    <h2 class="section-title">Practice that proves<br>the methodology.</h2>
+
+    <div class="ctf-grid reveal">
+      <div class="ctf-card">
+        <div class="ctf-platform">Hacker101 · XSS Playground by zseano</div>
+        <div class="ctf-title">DOM-Based XSS & Header Injection</div>
+        <div class="ctf-vuln">DOM XSS · Blind XSS · Custom Header Bypass</div>
+        <div class="ctf-desc">Exploited a <code style="color:var(--accent);font-size:11px">window.location.hash</code> sink for DOM XSS, attempted blind exfiltration via webhook.site, and retrieved the final flag by discovering a hardcoded <code style="color:var(--accent);font-size:11px">X-SAFEPROTECTION</code> header value using curl with HTTP/1.1 to preserve casing.</div>
+      </div>
+      <div class="ctf-card">
+        <div class="ctf-platform">Hacker101 · Web</div>
+        <div class="ctf-title">Cody's First Blog</div>
+        <div class="ctf-vuln">PHP Code Injection · LF · Auth Bypass</div>
+        <div class="ctf-desc">Chained PHP code injection with local file inclusion and authentication bypass via URL parameter manipulation. Full application compromise through a sequence of individually low-complexity flaws.</div>
+      </div>
+      <div class="ctf-card">
+        <div class="ctf-platform">Hacker101 · Web</div>
+        <div class="ctf-title">Micro-CMS v2</div>
+        <div class="ctf-vuln">SQL Injection · Login Bypass</div>
+        <div class="ctf-desc">Bypassed authentication using UNION SELECT injection to inject a known password hash into the response, gaining admin access without knowing any valid credentials.</div>
+      </div>
+      <div class="ctf-card">
+        <div class="ctf-platform">Hacker101 · Hacky Holidays</div>
+        <div class="ctf-title">Hacky Holidays — All 12 Challenges</div>
+        <div class="ctf-vuln">12 / 12 Completed</div>
+        <div class="ctf-desc">Completed the full Hacker101 Hacky Holidays seasonal CTF room — 12 challenges covering a range of web attack techniques, each requiring independent discovery and exploitation.</div>
+      </div>
+      <div class="ctf-card">
+        <div class="ctf-platform">OWASP Juice Shop</div>
+        <div class="ctf-title">30+ Labs Completed</div>
+        <div class="ctf-vuln">OWASP Top 10 — Full Coverage</div>
+        <div class="ctf-desc">NFT Takeover (private key extraction from JS source), Deluxe Fraud (DOM attribute manipulation), XSS, SQLi, CSRF, access control, and more — systematically documented by OWASP category.</div></div>
+      <div class="ctf-card">
+        <div class="ctf-platform">PortSwigger Web Security Academy</div>
+        <div class="ctf-title">CSRF Labs</div>
+        <div class="ctf-vuln">SameSite Lax Bypass · Referer Validation Bypass</div>
+        <div class="ctf-desc">Exploited SameSite Lax cookie misconfigurations and broken Referer-based CSRF defenses in controlled lab environments — directly applicable to real-world bug bounty targets.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="section-eye">Technical Stack</div>
+    <h2 class="section-title">The toolkit.</h2>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <div class="skill-label">Web Attacks</div>
+        <ul class="skill-list">
+          <li>SQL Injection</li>
+          <li>XSS — Reflected, DOM, Blind</li>
+          <li>CSRF</li>
+          <li>Business Logic Abuse</li>
+          <li>Broken Access Control / IDOR</li>
+          <li>PHP Code Injection / LFI</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">Recon</div>
+        <ul class="skill-list">
+          <li>Subfinder</li>
+          <li>Httpx</li>
+          <li>Nuclei</li>
+          <li>Dirb / Gobuster</li>
+          <li>Manual API Enumeration</li>
+          <li>DevTools Network Analysis</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">Tools</div>
+        <ul class="skill-list">
+          <li>Burp Suite (Repeater, Proxy)</li>
+          <li>Turbo Intruder</li>
+          <li>curl / wget</li>
+          <li>Kali Linux</li>
+          <li>Webhook.site (Blind XSS)</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">Methodology</div>
+        <ul class="skill-list">
+          <li>OWASP Top 10:2025</li>
+          <li>OWASP WSTG</li>
+          <li>Black-Box Testing</li>
+          <li>Responsible Disclosure</li>
+          <li>Professional Report Writing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="wrap">
+    <div class="section-eye">Credentials</div>
+    <h2  class="section-title" style="font-size: 28px;">The paper trail.</h2>
+    <div class="certs-grid reveal">
+      <div class="cert-card">
+        <img class="cert-img" src="cert3.png" alt="Cyberpedia Cybersecurity Bootcamp">
+        <div class="cert-meta">
+          <div class="cert-issuer">Cyberpedia</div>
+          <div class="cert-name">Cybersecurity Bootcamp</div>
+          <div class="cert-date">May 2026 · ID: CP-X5RZ-HFTD</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <img class="cert-img" src="cert1.png" alt="TryHackMe Pre Security">
+        <div class="cert-meta">
+          <div class="cert-issuer">TryHackMe</div>
+          <div class="cert-name">Pre Security Learning Path</div>
+          <div class="cert-date">September 2024 · THM-YZNFA6JB9I</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <img class="cert-img" src="cert2.png" alt="TryHackMe Cyber Security 101">
+        <div class="cert-meta">
+          <div class="cert-issuer">TryHackMe</div>
+          <div class="cert-name">Cyber Security 101</div>
+          <div class="cert-date">November 2024 · THM-XFDBSYZVMA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="section-eye">Get in Touch</div>
+    <h2 class="section-title">Ready to find<br>your vulnerabilities?</h2>
+    <div class="contact-grid reveal">
+      <div class="contact-left">
+        <div class="contact-available">● Available now</div>
+        <div class="contact-headline">Your application has vulnerabilities.<br>Let me find them first.</div><p class="contact-sub" style="margin-top:16px">Every engagement includes a professional report with severity ratings, reproduction steps, evidence, and remediation recommendations — mapped to OWASP Top 10:2025.</p>
+      </div>
+      <div class="contact-right">
+        <a href="mailto:Shadi300bro@gmail.com" class="contact-link">
+          <span class="contact-icon">✉</span>
+          Shadi300bro@gmail.com
+        </a>
+        <a href="https://hackerone.com/shadi_ib-66" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-icon">⬡</span>
+          HackerOne Profile
+        </a>
+        <a href="report.pdf" download class="contact-link">
+          <span class="contact-icon">↓</span>
+          Sample Pentest Report (PDF)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2026 <span>Shadi Ibrahim</span> · Web Penetration Tester</div>
+  <div class="footer-copy">All testing conducted under written authorization</div>
+</footer>
+
+<script>
+// ── MATRIX RAIN ──
+(function(){
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, cols, drops;
+  const chars = '01';
+  const fs = 13;
+
+  function init(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    cols = Math.floor(W / fs);
+    drops = Array(cols).fill(1);
+  }
+
+  function draw(){
+    ctx.fillStyle = 'rgba(6,8,11,0.05)';
+    ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = '#00e5ff';
+    ctx.font = fs+'px Space Mono, monospace';
+    for(let i=0;i<drops.length;i++){
+      const c = chars[Math.floor(Math.random()*chars.length)];
+      ctx.fillText(c, i*fs, drops[i]*fs);
+      if(drops[i]*fs > H && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+
+  init();
+  window.addEventListener('resize', init);
+  setInterval(draw, 60);
+})();
+
+// ── FINDINGS ACCORDION ──
+function toggleFinding(btn){
+  const body = btn.nextElementSibling;
+  const expanded = btn.getAttribute('aria-expanded') === 'true';
+  // close all
+  document.querySelectorAll('.finding-trigger').forEach(b=>{
+    b.setAttribute('aria-expanded','false');
+    b.nextElementSibling.classList.remove('open');
+  });
+  // open this one if it was closed
+  if(!expanded){
+    btn.setAttribute('aria-expanded','true');
+    body.classList.add('open');
+  }
+}
+
+// ── SMOOTH SCROLL for nav links (works inside iframes too) ──
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); ro.unobserve(e.target); } });
+},{threshold:0.08});
+reveals.forEach(el=>ro.observe(el));
+</script>
+</body>
+</html>
