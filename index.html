@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shadi Ibrahim — Web Penetration Tester</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- استبدال خط Syne بخط Inter الأكثر حدة واحترافية للأمن السيبراني -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-h1 { font-size: 35px !important; }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
@@ -27,7 +28,7 @@ h1 { font-size: 35px !important; }
   --text:#c8d4e0;
   --white:#edf2f7;
   --mono:'Space Mono',monospace;
-  --sans:'Syne',sans-serif;
+  --sans:'Inter',sans-serif; /* تطبيق الخط الجديد المريح للعين */
 }
 
 html{scroll-behavior:smooth}
@@ -74,9 +75,10 @@ nav{
 .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
+/* تحسين حجم وتباعد العناوين لإنهاء مشكلة تداخل النصوص */
 .hero h1{
-  font-size:clamp(52px,8vw,110px);font-weight:800;line-height:.95;
-  letter-spacing:-.03em;color:var(--white);margin-bottom:6px;
+  font-size:clamp(38px, 6.5vw, 84px) !important; font-weight:900; line-height:1.1;
+  letter-spacing:-0.025em; color:var(--white); margin-bottom:16px;
 }
 .hero h1 .name-line{
   display:block;
@@ -101,11 +103,10 @@ nav{
 .stat{border-left:2px solid var(--accent);padding-left:16px}
 .stat-num{font-size:32px;font-weight:800;color:var(--white);line-height:1;font-family:var(--sans)}
 .stat-num.red{color:var(--red)}
-.stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
-
-.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
 .btn-primary{
-  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:16px 32px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--bg);background:var(--accent);padding:16px 32px;
   border:none;cursor:pointer;text-decoration:none;
   transition:opacity .2s,box-shadow .2s;display:inline-block;
   box-shadow:0 0 24px rgba(0,229,255,.2);
@@ -129,8 +130,8 @@ section{position:relative;z-index:1;padding:100px 0}
 }
 .section-eye::before{content:'';width:24px;height:1px;background:var(--accent)}
 h2.section-title{
-  font-size:clamp(32px,4.5vw,52px);font-weight:800;color:var(--white);
-  letter-spacing:-.025em;margin-bottom:60px;line-height:1.1;
+  font-size:clamp(30px,4vw,46px) !important; font-weight:850; color:var(--white);
+  letter-spacing:-.02em;margin-bottom:60px;line-height:1.2;
 }
 .rule{border:none;border-top:1px solid var(--border);margin:0;position:relative;z-index:1}
 
@@ -148,7 +149,7 @@ h2.section-title{
   padding:48px 48px 0;
 }
 .pentest-kicker{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
-.pentest-name{font-size:30px;font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:4px}
+.pentest-name{font-size:26px !important; font-weight:800; color:var(--white); letter-spacing:-.01em; margin-bottom:4px}
 .pentest-url{font-family:var(--mono);font-size:12px;color:var(--accent)}
 .auth-badge{
   font-family:var(--mono);font-size:10px;padding:6px 14px;
@@ -165,7 +166,7 @@ h2.section-title{
   background:var(--surface);padding:28px 36px;
   display:flex;flex-direction:column;gap:4px;
 }
-.summary-num{font-size:48px;font-weight:800;line-height:1;font-family:var(--sans)}
+.summary-num{font-size:42px !important; font-weight:800; line-height:1; font-family:var(--sans)}
 .summary-num.red{color:var(--red)}
 .summary-num.orange{color:var(--orange)}
 .summary-num.green{color:var(--green)}
@@ -186,10 +187,10 @@ h2.section-title{
 .finding-trigger:hover .finding-title{color:var(--accent)}
 .sev-pill{
   font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  padding:4px 10px;flex-shrink:0;border-radius:2px;min-width:72px;text-align:center;
-}
+  padding:4px 10px;flex-shrink:0;border-radius:2px;min-width:72px;text-align:center;}
 .sev-critical{background:rgba(255,60,90,.12);color:var(--red);border:1px solid rgba(255,60,90,.3)}
-.sev-medium{background:rgba(255,140,0,.1);color:var(--orange);border:1px solid rgba(255,140,0,.25)}.sev-low{background:rgba(77,159,255,.1);color:var(--blue);border:1px solid rgba(77,159,255,.25)}
+.sev-medium{background:rgba(255,140,0,.1);color:var(--orange);border:1px solid rgba(255,140,0,.25)}
+.sev-low{background:rgba(77,159,255,.1);color:var(--blue);border:1px solid rgba(77,159,255,.25)}
 .sev-pass{background:rgba(0,212,126,.08);color:var(--green);border:1px solid rgba(0,212,126,.2)}
 .finding-title{font-size:15px;font-weight:600;color:var(--text);flex:1;transition:color .2s}
 .finding-owasp{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto;padding-right:16px}
@@ -262,10 +263,10 @@ h2.section-title{
 .skill-list li::before{content:'›';position:absolute;left:0;color:var(--accent)}
 
 /* ═══════════════ CERTS ═══════════════ */
-.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
-.cert-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .2s}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}.cert-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .2s}
 .cert-card:hover{border-color:rgba(0,229,255,.3)}
-.cert-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;filter:brightness(.95);transition:filter .25s}.cert-card:hover .cert-img{filter:brightness(1.05)}
+.cert-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;filter:brightness(.95);transition:filter .25s}
+.cert-card:hover .cert-img{filter:brightness(1.05)}
 .cert-meta{padding:20px 24px}
 .cert-issuer{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px}
 .cert-name{font-size:16px;font-weight:700;color:var(--white);margin-bottom:3px}
@@ -286,7 +287,7 @@ h2.section-title{
   background:radial-gradient(circle,rgba(0,229,255,.07) 0%,transparent 70%);
   pointer-events:none;
 }
-.contact-headline{font-size:clamp(22px,3vw,38px);font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-.02em;margin-bottom:16px}
+.contact-headline{font-size:clamp(22px,3vw,34px) !important; font-weight:850; color:var(--white); line-height:1.2; letter-spacing:-.02em; margin-bottom:16px}
 .contact-sub{font-size:15px;color:var(--body);line-height:1.75}
 .contact-right{padding:64px 56px;display:flex;flex-direction:column;justify-content:center;gap:14px}
 .contact-link{
@@ -325,7 +326,7 @@ footer{
   .hero{padding:120px 24px 80px}
   .hero-stats{gap:24px}
   .pentest-top{grid-template-columns:1fr;padding:28px 24px 0}
-  .pentest-summary{grid-template-columns:1fr}
+  .pentest-summary{grid-template-columns:1fr 1fr 1fr}
   .findings-section{padding:0 24px 32px}
   .finding-body{padding-left:0}
   .pentest-footer{padding:20px 24px}
@@ -355,13 +356,12 @@ footer{
     <li><a href="#certs">Certs</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-</nav>
-
-<!-- HERO -->
+</nav><!-- HERO -->
 <div class="hero">
   <div class="hero-tag">
     <span></span>
-    Available for engagements</div>
+    Available for engagements
+  </div>
   <h1>
     I find what your<br>
     <span class="name-line">security team missed.</span>
@@ -625,7 +625,7 @@ footer{
 <section id="certs">
   <div class="wrap">
     <div class="section-eye">Credentials</div>
-    <h2  class="section-title" style="font-size: 28px;">The paper trail.</h2>
+    <h2 class="section-title" style="font-size: 28px;">The paper trail.</h2>
     <div class="certs-grid reveal">
       <div class="cert-card">
         <img class="cert-img" src="cert3.png" alt="Cyberpedia Cybersecurity Bootcamp">
@@ -672,7 +672,7 @@ footer{
           <span class="contact-icon">✉</span>
           Shadi300bro@gmail.com
         </a>
-        <a href="https://hackerone.com/shadi_ib-66" target="_blank" rel="noopener" class="contact-link">
+        <a href="https://hackerone.com" target="_blank" rel="noopener" class="contact-link">
           <span class="contact-icon">⬡</span>
           HackerOne Profile
         </a>
