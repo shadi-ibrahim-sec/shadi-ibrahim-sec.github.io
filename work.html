@@ -170,7 +170,7 @@ h2.section-title{
 .pentest-footer{
   display:flex;align-items:center;justify-content:space-between;
   padding:28px 48px;border-top:1px solid var(--border);
-  background:var(--surface2);flex-wrap:wrap;gap:24px;
+  background:var(--surface2);flex-wrap:wrap;gap:16px;
 }
 .pentest-tags{display:flex;gap:8px;flex-wrap:wrap}
 .ptag{
@@ -382,16 +382,19 @@ footer{
           <span class="ptag">Access Control</span>
           <span class="ptag">Written Authorization</span>
         </div>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <a href="report.pdf" download="Shadi_Ibrahim_Report_1.pdf" class="dl-btn">
-            ↓ Download Report 1 (PDF)
-          </a>
-          <a href="report2.pdf" download="Shadi_Ibrahim_Report_2.pdf" class="dl-btn" style="background: transparent; color: var(--accent); border: 1px solid var(--accent);">
-            ↓ Download Report 2 (PDF)
-          </a>
-        </div>
+        <a href="report.pdf" download="Shadi_Ibrahim_Pentest_Report.pdf" class="dl-btn">
+          ↓ Download Full Report (PDF)
+        </a>
       </div>
     </div>
+
+    <!-- قسم مستقل وجديد تماماً للتقرير الثاني وعزله تماماً عن الصندوق الرمادي فوق -->
+    <div style="margin-top: 40px; display: flex; justify-content: flex-end;" class="reveal">
+      <a href="report2.pdf" download="Shadi_Ibrahim_Additional_Report.pdf" class="dl-btn" style="background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 14px 28px;">
+        ↓ Download Additional Report (PDF)
+      </a>
+    </div>
+
   </div>
 </section>
 
