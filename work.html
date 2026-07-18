@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shadi Ibrahim - Work</title>
     <style>
-        /* التنسيق العام المظلم لصفحة Shadi Ibrahim */
         body {
             background-color: #0b151e;
             color: #d1d7db;
@@ -19,17 +18,15 @@
             margin: 0 auto;
         }
 
-        /* تصميم المربع الرئيسي (الـ Card) */
         .work-card {
             background-color: #112233;
             border: 1px solid #1a334d;
             border-radius: 4px;
             padding: 25px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        /* سطر الثغرة أو العنوان الرئيسي */
         .vuln-row {
             display: flex;
             align-items: center;
@@ -42,7 +39,6 @@
             border-bottom: none;
         }
 
-        /* وسم الخطورة (الـ Badges) العالية باللون الأحمر النيوني */
         .badge {
             font-size: 11px;
             font-weight: bold;
@@ -51,14 +47,39 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             display: inline-block;
-            min-width: 65px;
+            min-width: 70px;
             text-align: center;
+        }
+
+        /* ألوان الباجات مطابقة لصورتك */
+        .badge.critical {
+            background-color: rgba(217, 83, 79, 0.1);
+            color: #d9534f;
+            border: 1px solid #d9534f;
         }
 
         .badge.high {
             background-color: rgba(217, 83, 79, 0.1);
             color: #d9534f;
             border: 1px solid #d9534f;
+        }
+
+        .badge.medium {
+            background-color: rgba(240, 173, 78, 0.1);
+            color: #f0ad4e;
+            border: 1px solid #f0ad4e;
+        }
+
+        .badge.low {
+            background-color: rgba(91, 192, 222, 0.1);
+            color: #5bc0de;
+            border: 1px solid #5bc0de;
+        }
+
+        .badge.pass {
+            background-color: rgba(92, 184, 92, 0.1);
+            color: #5cb85c;
+            border: 1px solid #5cb85c;
         }
 
         .vuln-title {
@@ -74,12 +95,18 @@
             color: #64748b;
         }
 
-        /* أقسام الأوسمة والأدوات المستهدفة (Tags) */
+        .description {
+            color: #8b9eb3;
+            font-size: 14px;
+            margin: 15px 0 15px 0;
+            line-height: 1.6;
+        }
+
         .tags-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid rgba(26, 51, 77, 0.5);
         }
@@ -93,7 +120,6 @@
             border-radius: 2px;
         }
 
-        /* أزرار التحميل البيضاء المحددة بحدود النيون عند التمرير */
         .btn-container {
             margin-top: 25px;
             display: flex;
@@ -125,48 +151,68 @@
 
 <div class="portfolio-container">
 
-    <!-- 1. المربع الخاص بالبرنامج المفحوص بالكامل -->
+    <!-- المربع الأول: التقرير الأساسي (الموجود بصورتك) -->
     <div class="work-card">
         <div class="vuln-row">
-            <span class="badge high">High</span>
-            <span class="vuln-title">AI Coding-Assistant Platform — Comprehensive Security Assessment</span>
-            <span class="owasp-tag">Full Scope Audit</span>
+            <span class="badge critical">CRITICAL</span>
+            <span class="vuln-title">Unauthorized Admin Panel Access — PII Exposure</span>
+            <span class="owasp-tag">OWASP A01:2025 ▼</span>
+        </div>
+        <div class="vuln-row">
+            <span class="badge medium">MEDIUM</span>
+            <span class="vuln-title">Missing Rate Limiting on Login Endpoint</span>
+            <span class="owasp-tag">OWASP A07:2025 ▼</span>
+        </div>
+        <div class="vuln-row">
+            <span class="badge low">LOW</span>
+            <span class="vuln-title">Improper Input Validation — HTTP 500 on Negative Price</span>
+            <span class="owasp-tag">OWASP A10:2025 ▼</span>
+        </div>
+        <div class="vuln-row">
+            <span class="badge pass">4x PASS</span>
+            <span class="vuln-title">Verified Security Controls</span>
+            <span class="owasp-tag">Positive Findings ▼</span>
         </div>
         
         <div class="tags-container">
-            <span class="tag">Black-Box Testing</span>
-            <span class="tag">Burp Suite Enterprise</span>
-            <span class="tag">AI Security Gateway</span>
+            <span class="tag">Black-Box</span>
+            <span class="tag">Burp Suite</span>
+            <span class="tag">OWASP Top 10:2025</span>
             <span class="tag">Business Logic</span>
+            <span class="tag">Access Control</span>
             <span class="tag">Written Authorization</span>
         </div>
 
         <div class="btn-container">
-            <a href="reports/full-assessment-report.pdf" class="download-btn" download>
-                ↓ DOWNLOAD FULL ASSESSMENT REPORT (PDF)
+            <a href="reports/full-report.pdf" class="download-btn" download>
+                ↓ DOWNLOAD FULL REPORT (PDF)
             </a>
         </div>
     </div>
 
-    <!-- 2. المربع الخاص بالثغرة المحددة -->
+
+    <!-- المربع الثاني: ثغرة منصة الذكاء الاصطناعي (لحالها) -->
     <div class="work-card">
         <div class="vuln-row">
-            <span class="badge high">High</span>
-            <span class="vuln-title">AI Gateway Session Race Condition (TOCTOU Entitlement Bypass)</span>
+            <span class="badge high">HIGH</span>
+            <span class="vuln-title">AI Platform — Race Condition (TOCTOU)</span>
             <span class="owasp-tag">OWASP A01:2026</span>
+        </div>
+        
+        <div class="description">
+            تجاوز قيود الاستهلاك اليومي في منصة ذكاء اصطناعي عبر استغلال ثغرة Race Condition. يسمح الاستغلال بتوليد نصوص بشكل مجاني دون احتسابها من الرصيد من خلال التلاعب بتوقيت الطلبات (Time-Gap Analysis).
         </div>
 
         <div class="tags-container">
+            <span class="tag">Black-Box</span>
+            <span class="tag">Burp Suite</span>
             <span class="tag">Turbo Intruder</span>
-            <span class="tag">Race Condition (TOCTOU)</span>
-            <span class="tag">Python PoC Scripting</span>
-            <span class="tag">Time-Gap Analysis</span>
-            <span class="tag">Reproducible Bug Bounty Finding</span>
+            <span class="tag">Business Logic</span>
         </div>
 
         <div class="btn-container">
-            <a href="reports/ai-race-condition-poc.pdf" class="download-btn" download>
-                ↓ DOWNLOAD VULNERABILITY PoC REPORT (PDF)
+            <a href="reports/ai-race-condition-report.pdf" class="download-btn" download>
+                ↓ DOWNLOAD VULNERABILITY REPORT (PDF)
             </a>
         </div>
     </div>
