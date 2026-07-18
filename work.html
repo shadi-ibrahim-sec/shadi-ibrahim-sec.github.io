@@ -16,11 +16,6 @@
   --border:#1a2030;
   --accent:#00e5ff;
   --accent-dim:rgba(0,229,255,0.08);
-  --accent-glow:rgba(0,229,255,0.15);
-  --red:#ff3c5a;
-  --orange:#ff8c00;
-  --green:#00d47e;
-  --blue:#4d9fff;
   --muted:#536070;
   --body:#8a97a8;
   --text:#c8d4e0;
@@ -29,16 +24,13 @@
   --sans:'Inter',sans-serif;
 }
 
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
 
-/* ═══════════════ CANVAS BACKGROUND ═══════════════ */
 #matrix-canvas{
   position:fixed;top:0;left:0;width:100%;height:100%;
   z-index:0;opacity:0.18;pointer-events:none;
 }
 
-/* ═══════════════ NAV ═══════════════ */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
@@ -46,262 +38,78 @@ nav{
   background:rgba(6,8,11,0.8);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
-.nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.08em;text-decoration:none}
-.nav-logo span{color:var(--muted)}
+.nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);text-decoration:none}
 .nav-links{display:flex;gap:36px;list-style:none}
-.nav-links a{
-  font-family:var(--mono);font-size:11px;color:var(--muted);
-  text-decoration:none;letter-spacing:.12em;text-transform:uppercase;
-  transition:color .2s;
-}
-.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.nav-links a{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;text-transform:uppercase}
+.nav-links a.active{color:var(--accent)}
 
-/* ═══════════════ SECTION BASE ═══════════════ */
-.wrap{max-width:1200px;margin:0 auto;padding:0 56px}
-.section-eye{
-  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:10px;
-  display:flex;align-items:center;gap:12px;
-}
+.wrap{max-width:1200px;margin:0 auto;padding:140px 56px 100px;position:relative;z-index:1}
+.section-eye{font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:12px}
 .section-eye::before{content:'';width:24px;height:1px;background:var(--accent)}
-h2.section-title{
-  font-size:clamp(24px,4.5vw,44px);font-weight:700;color:var(--white);
-  letter-spacing:-.02em;margin-bottom:60px;line-height:1.15;
-}
+h2.section-title{font-size:44px;color:var(--white);margin-bottom:60px}
 
-/* ═══════════════ WORK CARDS (صناديق الثغرات) ═══════════════ */
-.work-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 32px;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  position: relative;
-  z-index: 1;
-}
-
-.vuln-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
-}
-.vuln-row:last-of-type {
-  border-bottom: none;
-}
-
-.badge {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  min-width: 80px;
-  text-align: center;
-}
-
-.badge.critical { background: rgba(255,60,90,0.1); color: var(--red); border: 1px solid var(--red); }
-.badge.high { background: rgba(255,140,0,0.1); color: var(--orange); border: 1px solid var(--orange); }
-.badge.medium { background: rgba(255,140,0,0.1); color: var(--orange); border: 1px solid var(--orange); }
-.badge.low { background: rgba(77,159,255,0.1); color: var(--blue); border: 1px solid var(--blue); }
-.badge.pass { background: rgba(0,212,126,0.1); color: var(--green); border: 1px solid var(--green); }
-
-.vuln-title {
-  flex-grow: 1;
-  margin-left: 24px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--white);
-}
-
-.owasp-tag {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.description {
-  color: var(--body);
-  font-size: 14px;
-  margin: 16px 0;
-  line-height: 1.6;
-}
-
-.tags-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-}
-
-.tag {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted);
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  padding: 6px 12px;
-}
-
-.btn-container {
-  margin-top: 32px;
-  display: flex;
-}
-
+.work-card {background:var(--surface);border:1px solid var(--border);padding:32px;margin-bottom:40px;position:relative;z-index:1}
+.vuln-row {display:flex;align-items:center;padding:16px 0;border-bottom:1px solid var(--border)}
+.badge {font-family:var(--mono);font-size:10px;padding:4px 8px;border:1px solid;text-transform:uppercase;margin-right:20px}
+.badge.critical {color:var(--red);border-color:var(--red)}
+.badge.high {color:var(--orange);border-color:var(--orange)}
+.vuln-title {color:var(--white);font-weight:600}
+.description {color:var(--body);font-size:14px;margin:16px 0}
 .btn-download {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--bg);
-  background: var(--white);
-  padding: 14px 28px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  transition: opacity 0.2s;
-}
-
-.btn-download:hover {
-  opacity: 0.8;
-}
-
-/* ═══════════════ FOOTER ═══════════════ */
-footer{
-  position:relative;z-index:1;border-top:1px solid var(--border);
-  padding:28px 56px;max-width:1200px;margin:0 auto;
-  display:flex;justify-content:space-between;align-items:center;
-}
-.footer-copy{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
-.footer-copy span{color:var(--accent)}
-
-/* ═══════════════ RESPONSIVE ═══════════════ */
-@media(max-width:900px){
-  nav{padding:16px 24px}
-  .nav-links{display:none}
-  .wrap{padding:0 24px}
-  footer{padding:24px;flex-direction:column;gap:8px;text-align:center}
-  .vuln-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .vuln-title { margin-left: 0; }
+  display:inline-block;padding:14px 28px;background:var(--white);color:var(--bg);
+  font-family:var(--mono);font-size:11px;font-weight:700;text-decoration:none;text-transform:uppercase;
 }
 </style>
 </head>
 <body>
 
-<!-- MATRIX CANVAS -->
 <canvas id="matrix-canvas"></canvas>
 
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">shadi_ibrahim<span>.sec</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="work.html" class="active">Work</a></li>
-    <li><a href="index.html#skills">Skills</a></li>
-    <li><a href="index.html#certs">Certs</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
   </ul>
 </nav>
 
-<!-- WORK SECTION -->
-<div class="wrap" style="padding-top: 140px; min-height: 100vh; padding-bottom: 100px;">
+<div class="wrap">
   <div class="section-eye">Portfolio</div>
   <h2 class="section-title">Security Reports</h2>
 
-  <!-- 1. المربع الأصلي (كما في الصورة تماماً) -->
+  <!-- المربع الأول -->
   <div class="work-card">
-      <div class="vuln-row">
-          <span class="badge critical">CRITICAL</span>
-          <span class="vuln-title">Unauthorized Admin Panel Access — PII Exposure</span>
-          <span class="owasp-tag">OWASP A01:2025 ▼</span>
-      </div>
-      <div class="vuln-row">
-          <span class="badge medium">MEDIUM</span>
-          <span class="vuln-title">Missing Rate Limiting on Login Endpoint</span>
-          <span class="owasp-tag">OWASP A07:2025 ▼</span>
-      </div>
-      <div class="vuln-row">
-          <span class="badge low">LOW</span>
-          <span class="vuln-title">Improper Input Validation — HTTP 500 on Negative Price</span>
-          <span class="owasp-tag">OWASP A10:2025 ▼</span>
-      </div>
-      <div class="vuln-row">
-          <span class="badge pass">4x PASS</span>
-          <span class="vuln-title">Verified Security Controls</span>
-          <span class="owasp-tag">Positive Findings ▼</span>
-      </div>
-      
-      <div class="tags-container">
-          <span class="tag">Black-Box</span>
-          <span class="tag">Burp Suite</span>
-          <span class="tag">OWASP Top 10:2025</span>
-          <span class="tag">Business Logic</span>
-          <span class="tag">Access Control</span>
-          <span class="tag">Written Authorization</span>
-      </div>
-
+      <div class="vuln-row"><span class="badge critical">CRITICAL</span><span class="vuln-title">Unauthorized Admin Panel Access</span></div>
       <div class="btn-container">
-          <a href="reports/full-report.pdf" class="btn-download" download>
-              ↓ DOWNLOAD FULL REPORT (PDF)
-          </a>
+          <!-- عدل filename1.pdf لاسم ملفك الحقيقي -->
+          <a href="filename1.pdf" class="btn-download" download>↓ DOWNLOAD FULL REPORT</a>
       </div>
   </div>
 
-  <!-- 2. المربع الجديد (ثغرة الذكاء الاصطناعي مع زر التحميل) -->
+  <!-- المربع الثاني (الجديد) -->
   <div class="work-card">
-      <div class="vuln-row">
-          <span class="badge high">HIGH</span>
-          <span class="vuln-title">AI Platform — Race Condition (TOCTOU)</span>
-          <span class="owasp-tag">OWASP A01:2026</span>
-      </div>
-      
-      <div class="description">
-          Bypassed daily usage limits on an AI platform via a Race Condition vulnerability. The exploit allows generating text for free without consuming credits by manipulating request timings (Time-Gap Analysis).
-      </div>
-
-      <div class="tags-container">
-          <span class="tag">Black-Box</span>
-          <span class="tag">Burp Suite</span>
-          <span class="tag">Turbo Intruder</span>
-          <span class="tag">Business Logic</span>
-      </div>
-
+      <div class="vuln-row"><span class="badge high">HIGH</span><span class="vuln-title">AI Platform — Race Condition</span></div>
+      <div class="description">Bypassed daily usage limits on an AI platform via a Race Condition vulnerability.</div>
       <div class="btn-container">
-          <a href="reports/ai-race-condition-report.pdf" class="btn-download" download>
-              ↓ DOWNLOAD ADDITIONAL REPORT (PDF)
-          </a>
+          <!-- عدل filename2.pdf لاسم ملفك الحقيقي -->
+          <a href="filename2.pdf" class="btn-download" download>↓ DOWNLOAD ADDITIONAL REPORT</a>
       </div>
   </div>
-
 </div>
 
-<footer>
-  <div class="footer-copy">© 2026 <span>Shadi Ibrahim</span> · Web Penetration Tester</div>
-  <div class="footer-copy">All testing conducted under written authorization</div>
-</footer>
-
 <script>
-// ── MATRIX RAIN ──
 (function(){
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
   let W, H, cols, drops;
   const chars = '01';
   const fs = 13;
-
   function init(){
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
     cols = Math.floor(W / fs);
     drops = Array(cols).fill(1);
   }
-
   function draw(){
     ctx.fillStyle = 'rgba(6,8,11,0.05)';
     ctx.fillRect(0,0,W,H);
@@ -314,7 +122,6 @@ footer{
       drops[i]++;
     }
   }
-
   init();
   window.addEventListener('resize', init);
   setInterval(draw, 60);
