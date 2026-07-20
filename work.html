@@ -392,6 +392,100 @@ footer{
 
 <hr class="rule">
 
+<!-- AI GATEWAY BUG BOUNTY -->
+<section id="ai-gateway">
+  <div class="wrap">
+    <div class="section-eye">Bug Bounty · AI Platform</div>
+    <h2 class="section-title">Race condition in<br>AI usage timer.</h2>
+
+    <div class="pentest-wrap reveal">
+      <div class="pentest-top">
+        <div>
+          <div class="pentest-kicker">Bug Bounty · July 2026 · Authorized</div>
+          <div class="pentest-name">AI Gateway — Session Timer Bypass</div>
+          <div class="pentest-url">[REDACTED] · AI coding-assistant platform</div>
+        </div>
+        <div class="auth-badge">✓ Vendor Triaged · High Severity · Reward Issued</div>
+      </div>
+
+      <div class="pentest-summary">
+        <div class="summary-block">
+          <span class="summary-num red">1</span>
+          <span class="summary-label">High Severity Finding</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num orange">2</span>
+          <span class="summary-label">Independent Reproductions</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num green">1</span>
+          <span class="summary-label">Vendor Confirmed</span>
+        </div>
+      </div>
+
+      <div class="findings-section">
+        <div class="findings-header">Findings — click to expand</div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-critical">High</span>
+            <span class="finding-title">AI Session Continues After Timer Stop — TOCTOU</span>
+            <span class="finding-owasp">Session / Usage-Timer Race Condition</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">The daily-usage session check on the AI gateway endpoint <code style="color:var(--accent);font-size:12px">POST /v1/messages</code> is enforced only at request intake. By sending a long-running AI completion (large <code style="color:var(--accent);font-size:12px">max_tokens</code>) and, within ~0.5–1.6s, calling <code style="color:var(--accent);font-size:12px">POST /api/launch/session/stop</code>, the in-flight AI request continues processing and returns a complete response 9–20 seconds <em>after</em> the session was confirmed closed server-side.</p>
+            <div class="finding-impact">⚡ Impact: A user can consume AI compute/output beyond the window the usage timer actively tracks. Matches the vendor's own stated High-severity example: "the ability to keep an AI session active while the usage timer is not charged." No other user's data affected — self-contained entitlement bypass on researcher's own account per safe-testing rules.</div>
+          </div>
+        </div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-medium">Methodology</span>
+            <span class="finding-title">Burp Suite Turbo Intruder — Synchronized Race</span>
+            <span class="finding-owasp">Tool-Assisted Timing Attack</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Used Burp Suite's Turbo Intruder extension with dual <code style="color:var(--accent);font-size:12px">RequestEngine</code> instances (one for AI gateway, one for session control) firing under a shared gate to achieve sub-millisecond synchronization. Request A: AI completion with 800 max_tokens. Request B: Session stop with full browser header set (Origin, Referer, Sec-Fetch-*) to pass CSRF/origin checks. Two independent reproductions on separate sessions confirmed reliability.</p>
+            <div class="finding-impact blue">⚡ Key Insight: The vulnerability window is narrow (~0.5–1.6s) but reliably exploitable with tool-assisted timing. Demonstrates that session validation must be continuous for long-running generations, not just at intake.</div>
+          </div>
+        </div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-pass">Vendor Response</span>
+            <span class="finding-title">Triaged · Confirmed · High Severity</span>
+            <span class="finding-owasp">Bug Bounty Program</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Submitted through official bug bounty channel. Vendor confirmed within days: <strong>"You are correct that an in-flight AI request can continue after the usage session timer is stopped... We are classifying this as High severity according to our published bug bounty category: <code style="color:var(--accent);font-size:11px">the ability to keep an AI session active while the usage timer is not charged.</code>"</strong> Reward: 3 free months of platform access.</p>
+            <div class="finding-impact green">✓ Issue validated and classified High per vendor's own published scope. Remediation: re-validate session/quota at response streaming time; tie usage accounting to per-request server-side duration; consider cancelling in-flight generations on session closure.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pentest-footer">
+        <div class="pentest-tags">
+          <span class="ptag">Bug Bounty</span>
+          <span class="ptag">Race Condition</span>
+          <span class="ptag">TOCTOU</span>
+          <span class="ptag">Burp Suite Turbo Intruder</span>
+          <span class="ptag">AI Gateway</span>
+          <span class="ptag">Session Timer</span>
+        </div>
+        <a href="report2.pdf" download class="dl-btn">
+          ↓ Download Full Report (PDF)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
 <!-- TRAINING GROUNDS / CTF -->
 <section id="ctf">
   <div class="wrap">
