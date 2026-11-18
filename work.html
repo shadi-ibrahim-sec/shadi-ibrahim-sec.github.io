@@ -69,7 +69,7 @@ nav{
   font-size:clamp(36px,6vw,68px);font-weight:700;color:var(--white);
   letter-spacing:-.025em;line-height:1.1;margin-bottom:18px;
 }
-.page-header p{max-width:580px;font-size:16px;color:var(--body);line-height:1.75}
+.page-header p{max-width:620px;font-size:16px;color:var(--body);line-height:1.75}
 .back-link{
   display:inline-flex;align-items:center;gap:8px;margin-top:28px;
   font-family:var(--mono);font-size:11px;color:var(--muted);
@@ -101,6 +101,9 @@ h2.section-title{
   content:'';position:absolute;top:0;left:0;right:0;height:3px;
   background:linear-gradient(90deg,var(--red),var(--orange),var(--accent));
 }
+.pentest-wrap.case-study::before{
+  background:linear-gradient(90deg,var(--blue),var(--accent),var(--green));
+}
 .pentest-top{
   display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;
   padding:48px 48px 0;
@@ -127,6 +130,7 @@ h2.section-title{
 .summary-num.red{color:var(--red)}
 .summary-num.orange{color:var(--orange)}
 .summary-num.green{color:var(--green)}
+.summary-num.blue{color:var(--blue)}
 .summary-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
 
 /* Findings accordion */
@@ -188,7 +192,7 @@ h2.section-title{
 
 /* ═══════════════ TRAINING GROUNDS DIVIDER ═══════════════ */
 .tg-intro{margin-bottom:48px}
-.tg-intro p{max-width:600px;color:var(--body);font-size:15px;line-height:1.75}
+.tg-intro p{max-width:620px;color:var(--body);font-size:15px;line-height:1.75}
 
 /* ═══════════════ CTF GRID ═══════════════ */
 .ctf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--border)}
@@ -267,13 +271,13 @@ footer{
 <div class="page-header">
   <div class="page-eyebrow">Portfolio · Projects</div>
   <h1>Everything I've broken<br>so far.</h1>
-  <p>One real client engagement with a full professional report, plus a trail of CTF and lab work that shows the methodology behind it.</p>
+  <p>Client engagements, bug bounty discoveries, and anonymized security architecture assessments — plus a trail of CTF and lab work that shows the methodology behind them.</p>
 </div>
 
 <hr class="rule">
 
 <!-- PENTEST SHOWCASE -->
-<section id="threadly">
+<section id="ecommerce">
   <div class="wrap">
     <div class="section-eye">Real-World Engagement</div>
     <h2 class="section-title">What I found<br>on my first client.</h2>
@@ -486,13 +490,201 @@ footer{
 
 <hr class="rule">
 
+<!-- CLOUD PAAS CASE STUDY -->
+<section id="cloud-paas">
+  <div class="wrap">
+    <div class="section-eye">Architecture Review · Cloud PaaS</div>
+    <h2 class="section-title">Cloud PaaS &amp; Container<br>Platform Assessment.</h2>
+
+    <div class="pentest-wrap case-study reveal">
+      <div class="pentest-top">
+        <div>
+          <div class="pentest-kicker">Grey-Box Security &amp; API Review · November 2026 · Authorized VDP</div>
+          <div class="pentest-name">Cloud PaaS &amp; Container Deployment Platform</div>
+          <div class="pentest-url">*.[target-paas].dev &nbsp;·&nbsp; Spring Boot / Mobile &amp; MCP API</div>
+        </div>
+        <div class="auth-badge">✓ Responsible Disclosure · Case Study</div>
+      </div>
+
+      <div class="pentest-summary">
+        <div class="summary-block">
+          <span class="summary-num blue">1</span>
+          <span class="summary-label">Low / Info Finding</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num orange">8</span>
+          <span class="summary-label">Cross-Tenant IDOR Probes</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num green">5</span>
+          <span class="summary-label">Security Domains Verified</span>
+        </div>
+      </div>
+
+      <div class="findings-section">
+        <div class="findings-header">Findings &amp; Verified Controls — click to expand</div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-low">Low / Info</span>
+            <span class="finding-title">User Enumeration via Login Error Messages</span>
+            <span class="finding-owasp">POST /login · Account Discovery</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">The login endpoint <code style="color:var(--accent);font-size:12px">POST /login</code> returned distinct error responses depending on whether the submitted email address existed in the system: <code style="color:var(--accent);font-size:12px">"No account found with this email address"</code> vs. <code style="color:var(--accent);font-size:12px">"Incorrect password"</code>. Notably, <code style="color:var(--accent);font-size:12px">/forgot-password</code> properly returned a unified generic message.</p>
+            <div class="finding-impact blue">⚡ Impact: Differentiable error strings allow automated verification of registered email addresses, aiding credential-stuffing or targeted phishing. Reported privately under responsible disclosure with a recommendation to unify authentication error responses.</div>
+          </div>
+        </div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-pass">BOLA / IDOR</span>
+            <span class="finding-title">Cross-Tenant Container &amp; Deployment Isolation</span>
+            <span class="finding-owasp">8 API Endpoints Verified</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Extracted mobile/MCP API routes via static source analysis of the official Model Context Protocol (MCP) connector package and tested cross-account access across 8 endpoints (<code style="color:var(--accent);font-size:12px">GET/POST/PUT /api/mobile/containers/{id}</code>, <code style="color:var(--accent);font-size:12px">/logs</code>, <code style="color:var(--accent);font-size:12px">/env</code>, <code style="color:var(--accent);font-size:12px">/deployments/{deploymentId}</code>). Control tests on owned resources confirmed genuine persistence-layer ownership checks.</p>
+            <div class="finding-impact green">✓ All unauthorized cross-tenant requests were strictly rejected with 404 Not Found or 403 Forbidden.</div>
+          </div>
+        </div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-pass">BFLA &amp; Scopes</span>
+            <span class="finding-title">Hierarchical API Scoping, Session Revocation &amp; Allow-Listing</span>
+            <span class="finding-owasp">Auth &amp; Input Controls</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Verified immediate session invalidation upon logout, instant legacy API key revocation upon regeneration, cross-surface token isolation (<code style="color:var(--accent);font-size:12px">X-API-Key</code> rejected on <code style="color:var(--accent);font-size:12px">/web/api/**</code>), strict scope enforcement (<code style="color:var(--accent);font-size:12px">read &lt; deploy &lt; manage</code>), and backend allow-listing against mass assignment on profile updates.</p>
+            <div class="finding-impact green">✓ Strong defense-in-depth architecture across authentication, scope boundaries, and input sanitization.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pentest-footer">
+        <div class="pentest-tags">
+          <span class="ptag">Grey-Box</span>
+          <span class="ptag">MCP Connector Analysis</span>
+          <span class="ptag">BOLA / IDOR</span>
+          <span class="ptag">API Scopes</span>
+          <span class="ptag">Session Security</span>
+          <span class="ptag">Anonymized Case Study</span>
+        </div>
+        <a href="report3.pdf" download class="dl-btn">
+          ↓ Download Full Report (PDF)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ENERGY PROCUREMENT PLATFORM CASE STUDY -->
+<section id="energy-platform">
+  <div class="wrap">
+    <div class="section-eye">Business Logic &amp; Access Control · SaaS</div>
+    <h2 class="section-title">Energy Procurement<br>Platform Assessment.</h2>
+
+    <div class="pentest-wrap case-study reveal">
+      <div class="pentest-top">
+        <div>
+          <div class="pentest-kicker">Grey-Box Business-Logic &amp; API Review · November 2026 · Authorized VDP</div>
+          <div class="pentest-name">Energy &amp; Renewable Procurement Platform</div>
+          <div class="pentest-url">*.[target-energy].org &nbsp;·&nbsp; Multi-Tenant B2B Web Application</div>
+        </div>
+        <div class="auth-badge">✓ Responsible Disclosure · Case Study</div>
+      </div>
+
+      <div class="pentest-summary">
+        <div class="summary-block">
+          <span class="summary-num blue">1</span>
+          <span class="summary-label">Low / Info Finding</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num orange">4</span>
+          <span class="summary-label">Multi-Tenant Entities Tested</span>
+        </div>
+        <div class="summary-block">
+          <span class="summary-num green">4</span>
+          <span class="summary-label">Core Controls Verified</span>
+        </div>
+      </div>
+
+      <div class="findings-section">
+        <div class="findings-header">Findings &amp; Verified Controls — click to expand</div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-low">Low / Info</span>
+            <span class="finding-title">Incomplete Payment / Role-State Validation on Invoice Endpoint</span>
+            <span class="finding-owasp">CWE-840 · Business Logic</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">The endpoint <code style="color:var(--accent);font-size:12px">GET /api/company/{company_id}/pending-invoice-items</code> — designed to generate production invoice numbers and pending payout objects for onboarded Producer accounts — returned <code style="color:var(--accent);font-size:12px">200 OK</code> for an unpaid Corporate company (<code style="color:var(--accent);font-size:12px">subscription_status: "checkout_started"</code>). While company ownership was strictly validated, account tier and payment state were not enforced.</p>
+            <div class="finding-impact blue">⚡ Impact: Limited practical impact on fresh test accounts (zeroed payout values), but represents a defense-in-depth state-validation gap if historical Corporate accounts enter an unpaid or downgraded state. Recommended enforcing explicit Producer-role and active-subscription checks server-side.</div>
+          </div>
+        </div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-pass">BOLA / IDOR</span>
+            <span class="finding-title">Multi-Tenant &amp; Array-Parameter Ownership Enforcement</span>
+            <span class="finding-owasp">Cross-Account Isolation</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Tested cross-account access across billing, invoice, and projection endpoints using two independent accounts owning multiple Corporate and Producer companies. Notably, passing mixed owned and unowned IDs in array parameters (<code style="color:var(--accent);font-size:12px">?company_ids=owned&amp;company_ids=unowned</code>) accurately isolated and rejected the exact unauthorized ID with <code style="color:var(--accent);font-size:12px">404 Not Found</code>.</p>
+            <div class="finding-impact green">✓ Object-level ownership is consistently enforced even on batch/array query parameters.</div>
+          </div>
+        </div>
+
+        <div class="finding-item">
+          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+            <span class="sev-pill sev-pass">BFLA &amp; Logic</span>
+            <span class="finding-title">Admin Ledger RBAC &amp; Signup Allow-Listing</span>
+            <span class="finding-owasp">JS Bundle Recon &amp; Paywall</span>
+            <span class="finding-arrow">▼</span>
+          </button>
+          <div class="finding-body">
+            <p class="finding-desc">Identified internal administrative endpoints (<code style="color:var(--accent);font-size:12px">/api/admin/money/ledger/companies/{id}</code>) via compiled frontend JS bundle inspection and verified that standard user tokens receive an ambiguous <code style="color:var(--accent);font-size:12px">404 Not Found</code> (resisting endpoint enumeration). Also confirmed server-side allow-listing against injecting <code style="color:var(--accent);font-size:12px">"payment_required": false</code> during corporate onboarding.</p>
+            <div class="finding-impact green">✓ Backend RBAC, anti-enumeration error handling, and onboarding payment enforcement are properly implemented.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pentest-footer">
+        <div class="pentest-tags">
+          <span class="ptag">Business Logic</span>
+          <span class="ptag">JS Bundle Analysis</span>
+          <span class="ptag">Multi-Tenant IDOR</span>
+          <span class="ptag">BFLA</span>
+          <span class="ptag">Mass Assignment</span>
+          <span class="ptag">Anonymized Case Study</span>
+        </div>
+        <a href="report4.pdf" download class="dl-btn">
+          ↓ Download Full Report (PDF)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
 <!-- TRAINING GROUNDS / CTF -->
 <section id="ctf">
   <div class="wrap">
     <div class="section-eye">Hacker101 / CTF / Labs</div>
     <h2 class="section-title">The training grounds.</h2>
     <div class="tg-intro reveal">
-      <p>Before the real engagement, there was a lot of breaking things on purpose. These are the labs and CTF rooms that built the methodology behind the Threadly report — no NDA, no download, just the technique.</p>
+      <p>Before real-world engagements and vulnerability disclosures, there was a lot of breaking things on purpose. These are the labs and CTF rooms that built the methodology behind my reports — no NDA, no download, just the technique.</p>
     </div>
 
     <div class="ctf-grid reveal">
