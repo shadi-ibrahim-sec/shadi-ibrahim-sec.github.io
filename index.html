@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shadi Ibrahim — Web Penetration Tester</title>
+<title>Shadi Ibrahim — Web Application Penetration Tester</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -43,7 +43,7 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 56px;
-  background:rgba(6,8,11,0.8);backdrop-filter:blur(16px);
+  background:rgba(6,8,11,0.88);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
 .nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.08em;text-decoration:none}
@@ -55,6 +55,12 @@ nav{
   transition:color .2s;
 }
 .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+
+.nav-toggle{
+  display:none;background:none;border:1px solid var(--border);
+  color:var(--accent);font-family:var(--mono);font-size:18px;
+  padding:4px 10px;cursor:pointer;line-height:1.2;
+}
 
 /* ═══════════════ HERO ═══════════════ */
 .hero{
@@ -74,7 +80,7 @@ nav{
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
 .hero h1{
-  font-size:clamp(32px,6vw,80px);font-weight:700;line-height:1.05;
+  font-size:clamp(32px,5.8vw,74px);font-weight:700;line-height:1.08;
   letter-spacing:-.025em;color:var(--white);margin-bottom:6px;
 }
 .hero h1 .name-line{
@@ -89,18 +95,31 @@ nav{
 .hero-role em{color:var(--accent);font-style:normal}
 
 .hero-statement{
-  max-width:620px;font-size:18px;color:var(--body);
-  line-height:1.75;margin-bottom:52px;font-weight:400;
+  max-width:650px;font-size:18px;color:var(--body);
+  line-height:1.75;margin-bottom:44px;font-weight:400;
 }
 .hero-statement strong{color:var(--white);font-weight:600}
 
-.hero-stats{
-  display:flex;gap:40px;margin-bottom:52px;flex-wrap:wrap;
+/* Focus Pillars (replaces numeric counters) */
+.hero-pillars{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;
+  margin-bottom:48px;max-width:860px;
 }
-.stat{border-left:2px solid var(--accent);padding-left:16px}
-.stat-num{font-size:32px;font-weight:800;color:var(--white);line-height:1;font-family:var(--sans)}
-.stat-num.red{color:var(--red)}
-.stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.pillar{
+  border-left:2px solid var(--accent);
+  background:rgba(13,17,23,0.75);
+  padding:14px 18px;
+  border-top:1px solid var(--border);
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.pillar-title{
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  color:var(--white);margin-bottom:4px;letter-spacing:.02em;
+}
+.pillar-sub{
+  font-size:13px;color:var(--muted);line-height:1.45;
+}
 
 .hero-cta{display:flex;gap:16px;flex-wrap:wrap}
 .btn-primary{
@@ -129,12 +148,28 @@ section{position:relative;z-index:1;padding:100px 0}
 .section-eye::before{content:'';width:24px;height:1px;background:var(--accent)}
 h2.section-title{
   font-size:clamp(24px,4.5vw,44px);font-weight:700;color:var(--white);
-  letter-spacing:-.02em;margin-bottom:60px;line-height:1.15;
+  letter-spacing:-.02em;margin-bottom:48px;line-height:1.15;
 }
 .rule{border:none;border-top:1px solid var(--border);margin:0;position:relative;z-index:1}
 
+/* ═══════════════ ABOUT ═══════════════ */
+.about-box{
+  background:var(--surface);border:1px solid var(--border);
+  padding:44px 48px;display:grid;grid-template-columns:1.4fr 1fr;gap:48px;
+  align-items:center;
+}
+.about-text p{font-size:15.5px;color:var(--body);line-height:1.8;margin-bottom:16px}
+.about-text p:last-child{margin-bottom:0}
+.about-text strong{color:var(--white);font-weight:600}
+.about-meta{
+  border-left:1px solid var(--border);padding-left:36px;
+  display:flex;flex-direction:column;gap:18px;
+}
+.meta-item-label{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px}
+.meta-item-val{font-size:14px;color:var(--white);font-weight:500}
+
 /* ═══════════════ SKILLS ═══════════════ */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border)}
 .skill-group{background:var(--surface);padding:28px 32px}
 .skill-label{
   font-family:var(--mono);font-size:9px;color:var(--accent);
@@ -148,7 +183,7 @@ h2.section-title{
 .skill-list li::before{content:'›';position:absolute;left:0;color:var(--accent)}
 
 /* ═══════════════ CERTS ═══════════════ */
-.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
 .cert-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .2s}
 .cert-card:hover{border-color:rgba(0,229,255,.3)}
 .cert-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;filter:brightness(.95);transition:filter .25s}
@@ -206,11 +241,19 @@ footer{
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media(max-width:900px){
-  nav{padding:16px 24px}
-  .nav-links{display:none}
+  nav{padding:16px 24px;flex-wrap:wrap}
+  .nav-toggle{display:block}
+  .nav-links{
+    display:none;width:100%;flex-direction:column;gap:0;
+    margin-top:16px;border-top:1px solid var(--border);padding-top:8px;
+  }
+  .nav-links.open{display:flex}
+  .nav-links li a{display:block;padding:12px 4px}
   .wrap{padding:0 24px}
   .hero{padding:120px 24px 80px}
-  .hero-stats{gap:24px}
+  .hero-pillars{grid-template-columns:1fr}
+  .about-box{grid-template-columns:1fr;padding:32px 24px;gap:28px}
+  .about-meta{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:24px}
   .contact-grid{grid-template-columns:1fr}
   .contact-left{border-right:none;border-bottom:1px solid var(--border);padding:40px 28px}
   .contact-right{padding:40px 28px}
@@ -230,12 +273,14 @@ footer{
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">shadi_ibrahim<span>.sec</span></a>
-  <ul class="nav-links">
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="index.html" class="active">Home</a></li>
     <li><a href="work.html">Work</a></li>
-    <li><a href="index.html#skills">Skills</a></li>
-    <li><a href="index.html#certs">Certs</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -243,39 +288,70 @@ footer{
 <div class="hero">
   <div class="hero-tag">
     <span></span>
-    Available for engagements
+    Available for security assessments
   </div>
   <h1>
-    I find what your<br>
-    <span class="name-line">security team missed.</span>
+    Uncovering critical<br>
+    <span class="name-line">web &amp; API flaws.</span>
   </h1>
   <p class="hero-role">
-    Shadi Ibrahim &nbsp;·&nbsp; <em>Web Penetration Tester</em> &nbsp;·&nbsp; Bug Bounty Hunter
+    Shadi Ibrahim &nbsp;·&nbsp; <em>Application Security Researcher</em> &nbsp;·&nbsp; Web Penetration Tester
   </p>
   <p class="hero-statement">
-    I break web applications — <strong>legally, methodically, and with a full report.</strong>
-    From intercepting API calls to chaining business logic flaws into real financial damage,
-    I find vulnerabilities before your users pay the price.
+    I conduct authorized, methodical security assessments of modern web applications and REST/GraphQL APIs —
+    <strong>identifying access-control gaps, race conditions, and business-logic vulnerabilities</strong>
+    backed by clear, reproducible reports.
   </p>
-  <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-num red">2</div>
-      <div class="stat-label">Critical findings<br>on first real engagement</div>
+  <div class="hero-pillars">
+    <div class="pillar">
+      <div class="pillar-title">API &amp; Business Logic</div>
+      <div class="pillar-sub">Deep manual testing of multi-tenant BOLA/IDOR, BFLA, state machines, and TOCTOU race conditions.</div>
     </div>
-    <div class="stat">
-      <div class="stat-num">10</div>
-      <div class="stat-label">Vulnerabilities<br>documented & reported</div>
+    <div class="pillar">
+      <div class="pillar-title">OWASP Top 10:2025</div>
+      <div class="pillar-sub">Structured black-box &amp; grey-box methodology combining Burp Suite proxy analysis with JS bundle review.</div>
     </div>
-    <div class="stat">
-      <div class="stat-num">100%</div>
-      <div class="stat-label">Authorized &<br>responsible testing</div>
+    <div class="pillar">
+      <div class="pillar-title">Actionable Reporting</div>
+      <div class="pillar-sub">Executive-ready documentation with validated PoCs, severity ratings, and concrete remediation steps.</div>
     </div>
   </div>
   <div class="hero-cta">
-    <a href="work.html" class="btn-primary">See the Work</a>
-    <a href="#contact" class="btn-ghost">Hire Me</a>
+    <a href="work.html" class="btn-primary">View Case Studies &amp; Reports</a>
+    <a href="#contact" class="btn-ghost">Get in Touch</a>
   </div>
 </div>
+
+<hr class="rule">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-eye">Profile</div>
+    <h2 class="section-title">Methodology over noise.</h2>
+    <div class="about-box reveal">
+      <div class="about-text">
+        <p>I am an <strong>Application Security Researcher and Web Penetration Tester</strong> focused on uncovering high-impact vulnerabilities that automated scanners miss — particularly broken access controls, multi-tenant isolation flaws, race conditions, and complex business-logic abuse.</p>
+        <p>Rather than relying solely on automated fuzzing, my workflow centers on understanding how an application actually works: inspecting compiled frontend JavaScript bundles, mapping undocumented API routes, and testing state transitions across distinct user roles.</p>
+        <p>Every engagement and responsible disclosure is conducted strictly within authorized scope and documented with clear remediation guidance for engineering teams.</p>
+      </div>
+      <div class="about-meta">
+        <div>
+          <div class="meta-item-label">Primary Focus</div>
+          <div class="meta-item-val">Web Applications, REST APIs &amp; SaaS Platforms</div>
+        </div>
+        <div>
+          <div class="meta-item-label">Core Strengths</div>
+          <div class="meta-item-val">Access Control (BOLA/BFLA), Business Logic &amp; Race Conditions</div>
+        </div>
+        <div>
+          <div class="meta-item-label">Platforms</div>
+          <div class="meta-item-val">HackerOne · PortSwigger Web Security Academy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <hr class="rule">
 
@@ -286,45 +362,45 @@ footer{
     <h2 class="section-title">The toolkit.</h2>
     <div class="skills-grid reveal">
       <div class="skill-group">
-        <div class="skill-label">Web Attacks</div>
+        <div class="skill-label">Web &amp; API Attacks</div>
         <ul class="skill-list">
-          <li>SQL Injection</li>
-          <li>XSS — Reflected, DOM, Blind</li>
-          <li>CSRF &amp; Race Conditions (TOCTOU)</li>
-          <li>Business Logic Abuse</li>
-          <li>Broken Access Control / BOLA / BFLA</li>
-          <li>Mass Assignment &amp; Auth Bypass</li>
+          <li>Broken Access Control (BOLA / IDOR / BFLA)</li>
+          <li>Business Logic &amp; State Abuse</li>
+          <li>Race Conditions (TOCTOU)</li>
+          <li>SQL Injection &amp; Auth Bypass</li>
+          <li>XSS — Reflected, Stored, DOM, Blind</li>
+          <li>CSRF &amp; Mass Assignment</li>
         </ul>
       </div>
       <div class="skill-group">
         <div class="skill-label">Recon &amp; Analysis</div>
         <ul class="skill-list">
+          <li>Frontend JS Bundle Analysis</li>
+          <li>Manual API &amp; Endpoint Enumeration</li>
           <li>Subfinder &amp; Httpx</li>
           <li>Nuclei</li>
           <li>Dirb / Gobuster</li>
-          <li>Manual API Enumeration</li>
-          <li>Frontend JS Bundle Analysis</li>
-          <li>DevTools Network Analysis</li>
+          <li>DevTools Network Inspection</li>
         </ul>
       </div>
       <div class="skill-group">
         <div class="skill-label">Tools</div>
         <ul class="skill-list">
-          <li>Burp Suite (Repeater, Proxy)</li>
-          <li>Turbo Intruder</li>
+          <li>Burp Suite (Proxy, Repeater, Intruder)</li>
+          <li>Turbo Intruder (Custom Python)</li>
+          <li>sqlmap &amp; John the Ripper</li>
           <li>curl / wget</li>
           <li>Kali Linux</li>
-          <li>Webhook.site (Blind XSS)</li>
         </ul>
       </div>
       <div class="skill-group">
         <div class="skill-label">Methodology</div>
         <ul class="skill-list">
           <li>OWASP Top 10:2025</li>
-          <li>OWASP WSTG</li>
-          <li>Black-Box &amp; Grey-Box Testing</li>
+          <li>OWASP WSTG &amp; API Top 10</li>
+          <li>Black-Box &amp; Grey-Box Assessments</li>
           <li>Responsible Disclosure</li>
-          <li>Professional Report Writing</li>
+          <li>Technical Report Writing</li>
         </ul>
       </div>
     </div>
@@ -337,13 +413,13 @@ footer{
 <section id="certs">
   <div class="wrap">
     <div class="section-eye">Credentials</div>
-    <h2 class="section-title">The paper trail.</h2>
+    <h2 class="section-title">Certifications &amp; training.</h2>
     <div class="certs-grid reveal">
       <div class="cert-card">
         <img class="cert-img" src="cert3.png" alt="Cyberpedia Cybersecurity Bootcamp">
         <div class="cert-meta">
           <div class="cert-issuer">Cyberpedia</div>
-          <div class="cert-name">Cybersecurity Bootcamp</div>
+          <div class="cert-name">Cybersecurity Bootcamp (Red Team &amp; Web Pentesting)</div>
           <div class="cert-date">May 2026 · ID: CP-X5RZ-HFTD</div>
         </div>
       </div>
@@ -373,12 +449,12 @@ footer{
 <section id="contact">
   <div class="wrap">
     <div class="section-eye">Get in Touch</div>
-    <h2 class="section-title">Ready to find<br>your vulnerabilities?</h2>
+    <h2 class="section-title">Ready to assess<br>your application?</h2>
     <div class="contact-grid reveal">
       <div class="contact-left">
-        <div class="contact-available">● Available now</div>
-        <div class="contact-headline">Your application has vulnerabilities.<br>Let me find them first.</div>
-        <p class="contact-sub" style="margin-top:16px">Every engagement includes a professional report with severity ratings, reproduction steps, evidence, and remediation recommendations — mapped to OWASP Top 10:2025.</p>
+        <div class="contact-available">● Available for engagements</div>
+        <div class="contact-headline">Identify security gaps before they impact production.</div>
+        <p class="contact-sub" style="margin-top:16px">Every assessment includes a comprehensive report with severity ratings, step-by-step reproduction proofs, and actionable remediation guidance mapped to OWASP standards.</p>
       </div>
       <div class="contact-right">
         <a href="mailto:Shadi300bro@gmail.com" class="contact-link">
@@ -391,7 +467,7 @@ footer{
         </a>
         <a href="work.html" class="contact-link">
           <span class="contact-icon">→</span>
-          See My Projects
+          Explore Case Studies
         </a>
       </div>
     </div>
@@ -399,11 +475,27 @@ footer{
 </section>
 
 <footer>
-  <div class="footer-copy">© 2026 <span>Shadi Ibrahim</span> · Web Penetration Tester</div>
+  <div class="footer-copy">© 2026 <span>Shadi Ibrahim</span> · Application Security Researcher</div>
   <div class="footer-copy">All testing conducted under written authorization</div>
 </footer>
 
 <script>
+// ── MOBILE NAV TOGGLE ──
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', isOpen);
+  navToggle.textContent = isOpen ? '✕' : '☰';
+});
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.textContent = '☰';
+  });
+});
+
 // ── MATRIX RAIN ──
 (function(){
   const canvas = document.getElementById('matrix-canvas');
