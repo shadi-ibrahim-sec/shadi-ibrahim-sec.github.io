@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Work — Shadi Ibrahim</title>
+<title>Work &amp; Case Studies — Shadi Ibrahim</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -41,7 +41,7 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:20px 56px;
-  background:rgba(6,8,11,0.8);backdrop-filter:blur(16px);
+  background:rgba(6,8,11,0.88);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
 .nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.08em;text-decoration:none}
@@ -53,6 +53,12 @@ nav{
   transition:color .2s;
 }
 .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+
+.nav-toggle{
+  display:none;background:none;border:1px solid var(--border);
+  color:var(--accent);font-family:var(--mono);font-size:18px;
+  padding:4px 10px;cursor:pointer;line-height:1.2;
+}
 
 /* ═══════════════ PAGE HEADER ═══════════════ */
 .page-header{
@@ -66,10 +72,10 @@ nav{
 }
 .page-eyebrow::before{content:'';width:24px;height:1px;background:var(--accent)}
 .page-header h1{
-  font-size:clamp(36px,6vw,68px);font-weight:700;color:var(--white);
+  font-size:clamp(34px,5.8vw,64px);font-weight:700;color:var(--white);
   letter-spacing:-.025em;line-height:1.1;margin-bottom:18px;
 }
-.page-header p{max-width:620px;font-size:16px;color:var(--body);line-height:1.75}
+.page-header p{max-width:640px;font-size:16px;color:var(--body);line-height:1.75}
 .back-link{
   display:inline-flex;align-items:center;gap:8px;margin-top:28px;
   font-family:var(--mono);font-size:11px;color:var(--muted);
@@ -232,8 +238,14 @@ footer{
 .reveal.visible{opacity:1;transform:translateY(0)}
 
 @media(max-width:900px){
-  nav{padding:16px 24px}
-  .nav-links{display:none}
+  nav{padding:16px 24px;flex-wrap:wrap}
+  .nav-toggle{display:block}
+  .nav-links{
+    display:none;width:100%;flex-direction:column;gap:0;
+    margin-top:16px;border-top:1px solid var(--border);padding-top:8px;
+  }
+  .nav-links.open{display:flex}
+  .nav-links li a{display:block;padding:12px 4px}
   .wrap{padding:0 24px}
   .page-header{padding:120px 24px 40px}
   .pentest-top{grid-template-columns:1fr;padding:28px 24px 0}
@@ -242,6 +254,7 @@ footer{
   .summary-num{font-size:36px}
   .findings-section{padding:0 24px 32px}
   .finding-body{padding-left:0}
+  .finding-owasp{display:none}
   .pentest-footer{padding:20px 24px;flex-direction:column;align-items:stretch}
   .dl-btn{justify-content:center}
   footer{padding:24px;flex-direction:column;gap:8px;text-align:center}
@@ -258,9 +271,11 @@ footer{
 
 <nav>
   <a href="index.html" class="nav-logo">shadi_ibrahim<span>.sec</span></a>
-  <ul class="nav-links">
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="work.html" class="active">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#skills">Skills</a></li>
     <li><a href="index.html#certs">Certs</a></li>
     <li><a href="index.html#contact">Contact</a></li>
@@ -269,9 +284,9 @@ footer{
 
 <!-- PAGE HEADER -->
 <div class="page-header">
-  <div class="page-eyebrow">Portfolio · Projects</div>
-  <h1>Everything I've broken<br>so far.</h1>
-  <p>Client engagements, bug bounty discoveries, and anonymized security architecture assessments — plus a trail of CTF and lab work that shows the methodology behind them.</p>
+  <div class="page-eyebrow">Portfolio · Assessments &amp; Research</div>
+  <h1>Security Assessments<br>&amp; Case Studies.</h1>
+  <p>Authorized client penetration tests, responsible bug bounty disclosures, and anonymized API architecture reviews — alongside the offensive security labs behind the methodology.</p>
 </div>
 
 <hr class="rule">
@@ -279,8 +294,8 @@ footer{
 <!-- PENTEST SHOWCASE -->
 <section id="ecommerce">
   <div class="wrap">
-    <div class="section-eye">Real-World Engagement</div>
-    <h2 class="section-title">What I found<br>on my first client.</h2>
+    <div class="section-eye">Client Penetration Test</div>
+    <h2 class="section-title">E-Commerce Web<br>Application Assessment.</h2>
 
     <div class="pentest-wrap reveal">
       <div class="pentest-top">
@@ -308,18 +323,18 @@ footer{
       </div>
 
       <div class="findings-section">
-        <div class="findings-header">Findings — click to expand</div>
+        <div class="findings-header">Findings — click any item to toggle details</div>
 
         <div class="finding-item">
-          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+          <button class="finding-trigger" aria-expanded="true" onclick="toggleFinding(this)">
             <span class="sev-pill sev-critical">Critical</span>
             <span class="finding-title">Client-Side Price Manipulation</span>
             <span class="finding-owasp">OWASP A06:2025</span>
             <span class="finding-arrow">▼</span>
           </button>
-          <div class="finding-body">
-            <p class="finding-desc">The order-creation endpoint <code style="color:var(--accent);font-size:12px">POST /api/orders</code> accepted <code style="color:var(--accent);font-size:12px">price</code> and <code style="color:var(--accent);font-size:12px">total</code> directly from the client JSON body without server-side re-validation. By intercepting the checkout request in Burp Suite and modifying <code style="color:var(--accent);font-size:12px">"price": 79.99</code> to <code style="color:var(--accent);font-size:12px">"price": 2</code>, I received a <code style="color:var(--accent);font-size:12px">201 Created</code> response — a fully confirmed order at an arbitrary price.</p>
-            <div class="finding-impact">⚡ Impact: Any authenticated user can purchase any item for $0.01. Because the platform uses Cash on Delivery with no third-party payment gateway, there is no downstream re-validation. Uncapped financial loss at scale.</div>
+          <div class="finding-body open">
+            <p class="finding-desc">The order-creation endpoint <code style="color:var(--accent);font-size:12px">POST /api/orders</code> accepted <code style="color:var(--accent);font-size:12px">price</code> and <code style="color:var(--accent);font-size:12px">total</code> directly from the client JSON body without server-side re-validation. By intercepting the checkout request in Burp Suite and modifying <code style="color:var(--accent);font-size:12px">"price": 79.99</code> to <code style="color:var(--accent);font-size:12px">"price": 2</code>, a <code style="color:var(--accent);font-size:12px">201 Created</code> response was returned — confirming an order at an arbitrary price.</p>
+            <div class="finding-impact">⚡ Impact: Any authenticated user can purchase any item for $0.01. Because the platform uses Cash on Delivery with no third-party payment gateway, there is no downstream re-validation, creating uncapped financial risk.</div>
           </div>
         </div>
 
@@ -331,8 +346,8 @@ footer{
             <span class="finding-arrow">▼</span>
           </button>
           <div class="finding-body">
-            <p class="finding-desc">Navigating directly to <code style="color:var(--accent);font-size:12px">/admin/orders</code> while authenticated as a standard <code style="color:var(--accent);font-size:12px">"role":"User"</code> account rendered the full admin panel with zero server-side role check. Every customer's full name, phone number, delivery address, and order history was immediately visible. No special tooling required — just a URL.</p>
-            <div class="finding-impact">⚡ Impact: Mass PII exposure for every registered customer. Broken access control requires no exploit, no escalation — just navigation. Classified Critical under OWASP A01:2025.</div>
+            <p class="finding-desc">Navigating directly to <code style="color:var(--accent);font-size:12px">/admin/orders</code> while authenticated as a standard <code style="color:var(--accent);font-size:12px">"role":"User"</code> account rendered the full admin panel with zero server-side role enforcement. Every customer's full name, phone number, delivery address, and order history was immediately accessible.</p>
+            <div class="finding-impact">⚡ Impact: Mass PII exposure for all registered customers due to missing server-side authorization checks. Classified Critical under OWASP A01:2025.</div>
           </div>
         </div>
 
@@ -344,8 +359,8 @@ footer{
             <span class="finding-arrow">▼</span>
           </button>
           <div class="finding-body">
-            <p class="finding-desc">Seven consecutive failed login attempts against the same account returned identical, immediate <code style="color:var(--accent);font-size:12px">"Invalid login credentials"</code> responses — no lockout, delay, or CAPTCHA triggered. The endpoint is fully open to automated brute-force and credential-stuffing at scale.</p>
-            <div class="finding-impact orange">⚡ Impact: Users with weak or previously-breached passwords are at elevated risk of account takeover via automated attacks.</div>
+            <p class="finding-desc">Consecutive failed login attempts against the same account returned identical, immediate <code style="color:var(--accent);font-size:12px">"Invalid login credentials"</code> responses with no lockout, progressive delay, or CAPTCHA challenge triggered.</p>
+            <div class="finding-impact orange">⚡ Impact: Exposes user accounts with weak or previously breached passwords to automated credential-stuffing and brute-force attacks.</div>
           </div>
         </div>
 
@@ -357,8 +372,8 @@ footer{
             <span class="finding-arrow">▼</span>
           </button>
           <div class="finding-body">
-            <p class="finding-desc">Submitting <code style="color:var(--accent);font-size:12px">"price": -10</code> caused an unhandled server exception returning <code style="color:var(--accent);font-size:12px">HTTP 500</code> with empty body — no graceful validation or error handling. Confirms complete absence of numeric boundary validation on the order endpoint.</p>
-            <div class="finding-impact blue">⚡ Impact: Unhandled crash condition. Could be leveraged as a building block for availability degradation. Indicates broader input validation gaps.</div>
+            <p class="finding-desc">Submitting <code style="color:var(--accent);font-size:12px">"price": -10</code> caused an unhandled server exception returning <code style="color:var(--accent);font-size:12px">HTTP 500</code> with an empty body — confirming the absence of numeric boundary validation on the order endpoint.</p>
+            <div class="finding-impact blue">⚡ Impact: Unhandled server exception indicating broader schema and numeric boundary validation gaps.</div>
           </div>
         </div>
 
@@ -370,8 +385,8 @@ footer{
             <span class="finding-arrow">▼</span>
           </button>
           <div class="finding-body">
-            <p class="finding-desc">Four controls were actively tested and confirmed working: <strong style="color:var(--white)">Stored XSS</strong> — React's output encoding correctly rendered the payload as an inert text node. <strong style="color:var(--white)">CSRF</strong> — SameSite=Lax cookie attribute blocks cross-origin POST requests. <strong style="color:var(--white)">Admin Write Authorization</strong> — order status update correctly returned 403 Forbidden for non-privileged accounts. <strong style="color:var(--white)">IDOR</strong> — cross-account direct order ID access returned 404, session-scoped correctly.</p>
-            <div class="finding-impact green">✓ These controls are correctly implemented and should be preserved during remediation. The write/read authorization inconsistency identified above makes these results particularly valuable context.</div>
+            <p class="finding-desc">Four controls were actively tested and confirmed secure: <strong style="color:var(--white)">Stored XSS</strong> — React's output encoding rendered payloads safely. <strong style="color:var(--white)">CSRF</strong> — <code style="color:var(--accent);font-size:12px">SameSite=Lax</code> cookie policy blocks cross-origin POST requests. <strong style="color:var(--white)">Admin Write Authorization</strong> — order status updates properly returned <code style="color:var(--accent);font-size:12px">403 Forbidden</code> for standard users. <strong style="color:var(--white)">IDOR</strong> — cross-account direct order ID lookups returned <code style="color:var(--accent);font-size:12px">404 Not Found</code>.</p>
+            <div class="finding-impact green">✓ Verified baseline controls documented so engineering teams preserve them during remediation.</div>
           </div>
         </div>
 
@@ -386,8 +401,8 @@ footer{
           <span class="ptag">Access Control</span>
           <span class="ptag">Written Authorization</span>
         </div>
-        <a href="report.pdf" download class="dl-btn">
-          ↓ Download Full Report (PDF)
+        <a href="report.pdf" target="_blank" rel="noopener" class="dl-btn">
+          ↗ View Full Report (PDF)
         </a>
       </div>
     </div>
@@ -400,16 +415,16 @@ footer{
 <section id="ai-gateway">
   <div class="wrap">
     <div class="section-eye">Bug Bounty · AI Platform</div>
-    <h2 class="section-title">Race condition in<br>AI usage timer.</h2>
+    <h2 class="section-title">Race Condition in<br>AI Session Timer.</h2>
 
     <div class="pentest-wrap reveal">
       <div class="pentest-top">
         <div>
-          <div class="pentest-kicker">Bug Bounty · July 2026 · Authorized</div>
-          <div class="pentest-name">AI Gateway — Session Timer Bypass</div>
-          <div class="pentest-url">[REDACTED] · AI coding-assistant platform</div>
+          <div class="pentest-kicker">Responsible Disclosure · July 2026 · Authorized</div>
+          <div class="pentest-name">AI Gateway — Session Timer Bypass (TOCTOU)</div>
+          <div class="pentest-url">[REDACTED] · AI Coding-Assistant Platform</div>
         </div>
-        <div class="auth-badge">✓ Vendor Triaged · High Severity · Reward Issued</div>
+        <div class="auth-badge">✓ Vendor Triaged · High Severity · Bounty Awarded</div>
       </div>
 
       <div class="pentest-summary">
@@ -428,18 +443,18 @@ footer{
       </div>
 
       <div class="findings-section">
-        <div class="findings-header">Findings — click to expand</div>
+        <div class="findings-header">Findings — click any item to toggle details</div>
 
         <div class="finding-item">
-          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+          <button class="finding-trigger" aria-expanded="true" onclick="toggleFinding(this)">
             <span class="sev-pill sev-critical">High</span>
             <span class="finding-title">AI Session Continues After Timer Stop — TOCTOU</span>
             <span class="finding-owasp">Session / Usage-Timer Race Condition</span>
             <span class="finding-arrow">▼</span>
           </button>
-          <div class="finding-body">
-            <p class="finding-desc">The daily-usage session check on the AI gateway endpoint <code style="color:var(--accent);font-size:12px">POST /v1/messages</code> is enforced only at request intake. By sending a long-running AI completion (large <code style="color:var(--accent);font-size:12px">max_tokens</code>) and, within ~0.5–1.6s, calling <code style="color:var(--accent);font-size:12px">POST /api/launch/session/stop</code>, the in-flight AI request continues processing and returns a complete response 9–20 seconds <em>after</em> the session was confirmed closed server-side.</p>
-            <div class="finding-impact">⚡ Impact: A user can consume AI compute/output beyond the window the usage timer actively tracks. Matches the vendor's own stated High-severity example: "the ability to keep an AI session active while the usage timer is not charged." No other user's data affected — self-contained entitlement bypass on researcher's own account per safe-testing rules.</div>
+          <div class="finding-body open">
+            <p class="finding-desc">The daily-usage session check on the AI gateway endpoint <code style="color:var(--accent);font-size:12px">POST /v1/messages</code> was enforced only at request intake. By dispatching a long-running AI completion (large <code style="color:var(--accent);font-size:12px">max_tokens</code>) and calling <code style="color:var(--accent);font-size:12px">POST /api/launch/session/stop</code> within ~0.5–1.6s, the in-flight generation continued executing and returned a full response 9–20 seconds <em>after</em> the session was confirmed closed server-side.</p>
+            <div class="finding-impact">⚡ Impact: Enables unbilled AI compute consumption after session timer termination, directly matching the vendor's published High-severity scope definition. Tested strictly on the researcher's own account with zero impact on other users.</div>
           </div>
         </div>
 
@@ -451,8 +466,8 @@ footer{
             <span class="finding-arrow">▼</span>
           </button>
           <div class="finding-body">
-            <p class="finding-desc">Used Burp Suite's Turbo Intruder extension with dual <code style="color:var(--accent);font-size:12px">RequestEngine</code> instances (one for AI gateway, one for session control) firing under a shared gate to achieve sub-millisecond synchronization. Request A: AI completion with 800 max_tokens. Request B: Session stop with full browser header set (Origin, Referer, Sec-Fetch-*) to pass CSRF/origin checks. Two independent reproductions on separate sessions confirmed reliability.</p>
-            <div class="finding-impact blue">⚡ Key Insight: The vulnerability window is narrow (~0.5–1.6s) but reliably exploitable with tool-assisted timing. Demonstrates that session validation must be continuous for long-running generations, not just at intake.</div>
+            <p class="finding-desc">Configured Burp Suite's Turbo Intruder with dual <code style="color:var(--accent);font-size:12px">RequestEngine</code> instances (one targeting the AI gateway, one targeting session control) synchronized via a shared gate. Confirmed reliability across two independent test sessions.</p>
+            <div class="finding-impact blue">⚡ Key Insight: Demonstrates that long-running streaming/AI endpoints require continuous quota validation or active stream cancellation upon session closure rather than intake-only checks.</div>
           </div>
         </div>
 
@@ -464,8 +479,8 @@ footer{
             <span class="finding-arrow">▼</span>
           </button>
           <div class="finding-body">
-            <p class="finding-desc">Submitted through official bug bounty channel. Vendor confirmed within days: <strong>"You are correct that an in-flight AI request can continue after the usage session timer is stopped... We are classifying this as High severity according to our published bug bounty category: <code style="color:var(--accent);font-size:11px">the ability to keep an AI session active while the usage timer is not charged.</code>"</strong> Reward: 3 free months of platform access.</p>
-            <div class="finding-impact green">✓ Issue validated and classified High per vendor's own published scope. Remediation: re-validate session/quota at response streaming time; tie usage accounting to per-request server-side duration; consider cancelling in-flight generations on session closure.</div>
+            <p class="finding-desc">Submitted through the vendor's official security channel and confirmed within days: <strong>"You are correct that an in-flight AI request can continue after the usage session timer is stopped... We are classifying this as High severity according to our published bug bounty category."</strong></p>
+            <div class="finding-impact green">✓ Issue validated, classified High severity, and rewarded with 3 months of complimentary platform access.</div>
           </div>
         </div>
 
@@ -480,8 +495,8 @@ footer{
           <span class="ptag">AI Gateway</span>
           <span class="ptag">Session Timer</span>
         </div>
-        <a href="report2.pdf" download class="dl-btn">
-          ↓ Download Full Report (PDF)
+        <a href="report2.pdf" target="_blank" rel="noopener" class="dl-btn">
+          ↗ View Full Report (PDF)
         </a>
       </div>
     </div>
@@ -522,16 +537,16 @@ footer{
       </div>
 
       <div class="findings-section">
-        <div class="findings-header">Findings &amp; Verified Controls — click to expand</div>
+        <div class="findings-header">Findings &amp; Verified Controls — click any item to toggle details</div>
 
         <div class="finding-item">
-          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+          <button class="finding-trigger" aria-expanded="true" onclick="toggleFinding(this)">
             <span class="sev-pill sev-low">Low / Info</span>
             <span class="finding-title">User Enumeration via Login Error Messages</span>
             <span class="finding-owasp">POST /login · Account Discovery</span>
             <span class="finding-arrow">▼</span>
           </button>
-          <div class="finding-body">
+          <div class="finding-body open">
             <p class="finding-desc">The login endpoint <code style="color:var(--accent);font-size:12px">POST /login</code> returned distinct error responses depending on whether the submitted email address existed in the system: <code style="color:var(--accent);font-size:12px">"No account found with this email address"</code> vs. <code style="color:var(--accent);font-size:12px">"Incorrect password"</code>. Notably, <code style="color:var(--accent);font-size:12px">/forgot-password</code> properly returned a unified generic message.</p>
             <div class="finding-impact blue">⚡ Impact: Differentiable error strings allow automated verification of registered email addresses, aiding credential-stuffing or targeted phishing. Reported privately under responsible disclosure with a recommendation to unify authentication error responses.</div>
           </div>
@@ -574,8 +589,8 @@ footer{
           <span class="ptag">Session Security</span>
           <span class="ptag">Anonymized Case Study</span>
         </div>
-        <a href="report3.pdf" download class="dl-btn">
-          ↓ Download Full Report (PDF)
+        <a href="report3.pdf" target="_blank" rel="noopener" class="dl-btn">
+          ↗ View Full Report (PDF)
         </a>
       </div>
     </div>
@@ -616,16 +631,16 @@ footer{
       </div>
 
       <div class="findings-section">
-        <div class="findings-header">Findings &amp; Verified Controls — click to expand</div>
+        <div class="findings-header">Findings &amp; Verified Controls — click any item to toggle details</div>
 
         <div class="finding-item">
-          <button class="finding-trigger" aria-expanded="false" onclick="toggleFinding(this)">
+          <button class="finding-trigger" aria-expanded="true" onclick="toggleFinding(this)">
             <span class="sev-pill sev-low">Low / Info</span>
             <span class="finding-title">Incomplete Payment / Role-State Validation on Invoice Endpoint</span>
             <span class="finding-owasp">CWE-840 · Business Logic</span>
             <span class="finding-arrow">▼</span>
           </button>
-          <div class="finding-body">
+          <div class="finding-body open">
             <p class="finding-desc">The endpoint <code style="color:var(--accent);font-size:12px">GET /api/company/{company_id}/pending-invoice-items</code> — designed to generate production invoice numbers and pending payout objects for onboarded Producer accounts — returned <code style="color:var(--accent);font-size:12px">200 OK</code> for an unpaid Corporate company (<code style="color:var(--accent);font-size:12px">subscription_status: "checkout_started"</code>). While company ownership was strictly validated, account tier and payment state were not enforced.</p>
             <div class="finding-impact blue">⚡ Impact: Limited practical impact on fresh test accounts (zeroed payout values), but represents a defense-in-depth state-validation gap if historical Corporate accounts enter an unpaid or downgraded state. Recommended enforcing explicit Producer-role and active-subscription checks server-side.</div>
           </div>
@@ -668,8 +683,8 @@ footer{
           <span class="ptag">Mass Assignment</span>
           <span class="ptag">Anonymized Case Study</span>
         </div>
-        <a href="report4.pdf" download class="dl-btn">
-          ↓ Download Full Report (PDF)
+        <a href="report4.pdf" target="_blank" rel="noopener" class="dl-btn">
+          ↗ View Full Report (PDF)
         </a>
       </div>
     </div>
@@ -684,13 +699,13 @@ footer{
     <div class="section-eye">Hacker101 / CTF / Labs</div>
     <h2 class="section-title">The training grounds.</h2>
     <div class="tg-intro reveal">
-      <p>Before real-world engagements and vulnerability disclosures, there was a lot of breaking things on purpose. These are the labs and CTF rooms that built the methodology behind my reports — no NDA, no download, just the technique.</p>
+      <p>Before real-world engagements and vulnerability disclosures, there was a lot of controlled exploitation in lab environments. These are the CTF rooms and challenges that built the methodology behind my reports.</p>
     </div>
 
     <div class="ctf-grid reveal">
       <div class="ctf-card">
         <div class="ctf-platform">Hacker101 · XSS Playground by zseano <span class="ctf-badge">CTF</span></div>
-        <div class="ctf-title">DOM-Based XSS & Header Injection</div>
+        <div class="ctf-title">DOM-Based XSS &amp; Header Injection</div>
         <div class="ctf-vuln">DOM XSS · Blind XSS · Custom Header Bypass</div>
         <div class="ctf-desc">Exploited a <code style="color:var(--accent);font-size:11px">window.location.hash</code> sink for DOM XSS, attempted blind exfiltration via webhook.site, and retrieved the final flag by discovering a hardcoded <code style="color:var(--accent);font-size:11px">X-SAFEPROTECTION</code> header value using curl with HTTP/1.1 to preserve casing.</div>
       </div>
@@ -736,11 +751,28 @@ footer{
 </div>
 
 <footer>
-  <div class="footer-copy">© 2026 <span>Shadi Ibrahim</span> · Web Penetration Tester</div>
+  <div class="footer-copy">© 2026 <span>Shadi Ibrahim</span> · Application Security Researcher</div>
   <div class="footer-copy">All testing conducted under written authorization</div>
 </footer>
 
 <script>
+// ── MOBILE NAV TOGGLE ──
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', isOpen);
+  navToggle.textContent = isOpen ? '✕' : '☰';
+});
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.textContent = '☰';
+  });
+});
+
+// ── MATRIX RAIN ──
 (function(){
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
@@ -773,19 +805,15 @@ footer{
   setInterval(draw, 60);
 })();
 
+// ── INDEPENDENT ACCORDION TOGGLE ──
 function toggleFinding(btn){
   const body = btn.nextElementSibling;
   const expanded = btn.getAttribute('aria-expanded') === 'true';
-  document.querySelectorAll('.finding-trigger').forEach(b=>{
-    b.setAttribute('aria-expanded','false');
-    b.nextElementSibling.classList.remove('open');
-  });
-  if(!expanded){
-    btn.setAttribute('aria-expanded','true');
-    body.classList.add('open');
-  }
+  btn.setAttribute('aria-expanded', !expanded);
+  body.classList.toggle('open', !expanded);
 }
 
+// ── SCROLL REVEAL ──
 const reveals = document.querySelectorAll('.reveal');
 const ro = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); ro.unobserve(e.target); } });
